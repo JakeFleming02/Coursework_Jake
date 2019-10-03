@@ -8,7 +8,7 @@ public class Guest {
             ps.setInt(1, GuestID);
             ps.setString(2, GuestName);
             ps.executeUpdate();
-            System.out.println("Record added to Rooms table");
+            System.out.println("Record added to Guests table");
 
         } catch (Exception exception) {
             System.out.println(exception.getMessage());

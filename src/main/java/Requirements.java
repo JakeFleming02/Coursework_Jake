@@ -2,13 +2,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class Requirements {
-    public static void insertRequirements(int RequirementsID, String RequirementsName){
+    public static void insertRequirements(int RequirementsID, String RequirementsName) {
         try {
             PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Requirements (int RequirementsID, String RequirementsName) VALUES (?, ?)");
             ps.setInt(1, RequirementsID);
             ps.setString(2, RequirementsName);
             ps.executeUpdate();
-            System.out.println("Record added to Rooms table");
+            System.out.println("Record added to Requirements table");
 
         } catch (Exception exception) {
             System.out.println(exception.getMessage());
@@ -34,7 +34,7 @@ public class Requirements {
     }
 
 
-    public static void updateUser (int RequirementsID, String RequirementsName){
+    public static void updateUser(int RequirementsID, String RequirementsName) {
         try {
 
             PreparedStatement ps = Main.db.prepareStatement("UPDATE Requirements SET RequirementsName = ? WHERE RequirementsID = ?");
@@ -50,7 +50,7 @@ public class Requirements {
 
     }
 
-    public static void deleteRequirements (int RequirementsID){
+    public static void deleteRequirements(int RequirementsID) {
         try {
 
             PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Requirements WHERE RequirementsID = ?");
@@ -62,3 +62,4 @@ public class Requirements {
 
         }
     }
+}
