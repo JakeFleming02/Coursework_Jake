@@ -1,8 +1,12 @@
+package Controllers;
+
+import Server.Main;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class Guest {
-    public static void insertGuest(int GuestID, String GuestName){
+    public static void insertGuest(int GuestID, String GuestName) {
         try {
             PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Guest (int GuestID, String GuestName) VALUES (?, ?)");
             ps.setInt(1, GuestID);
@@ -34,7 +38,7 @@ public class Guest {
     }
 
 
-    public static void updateUser (int GuestID, String GuestName){
+    public static void updateUser(int GuestID, String GuestName) {
         try {
 
             PreparedStatement ps = Main.db.prepareStatement("UPDATE Guest SET GuestName = ? WHERE GuestID = ?");
@@ -50,7 +54,7 @@ public class Guest {
 
     }
 
-    public static void deleteRequirements (int GuestID){
+    public static void deleteRequirements(int GuestID) {
         try {
 
             PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Guest WHERE GuestID = ?");
@@ -62,3 +66,4 @@ public class Guest {
 
         }
     }
+}

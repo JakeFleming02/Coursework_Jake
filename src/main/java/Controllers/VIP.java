@@ -1,3 +1,7 @@
+package Controllers;
+
+import Server.Main;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -7,7 +11,7 @@ public class VIP {
             PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Requirements (VIPID) VALUES (?)");
             ps.setInt(1, VIPID);
             ps.executeUpdate();
-            System.out.println("Record added to VIP table");
+            System.out.println("Record added to Controllers.VIP table");
 
         } catch (Exception exception) {
             System.out.println(exception.getMessage());
@@ -21,7 +25,7 @@ public class VIP {
 
             ResultSet results = ps.executeQuery();
             while (results.next()) {
-                boolean VIPID = updateVIP();
+                int VIPID = results.getInt(1);
                 System.out.println(VIPID);
             }
 
@@ -32,11 +36,11 @@ public class VIP {
     }
 
 
-    public static void updateVIP(boolean VIPID) {
+    public static void updateVIP(int VIPID) {
         try {
 
             PreparedStatement ps = Main.db.prepareStatement("UPDATE VIP SET VIPID = ?");
-            ps.setBoolean(1, VIPID);
+            ps.setInt(1, VIPID);
 
         } catch (Exception e) {
 

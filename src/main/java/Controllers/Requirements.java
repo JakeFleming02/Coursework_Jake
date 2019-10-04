@@ -1,3 +1,7 @@
+package Controllers;
+
+import Server.Main;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -8,7 +12,7 @@ public class Requirements {
             ps.setInt(1, RequirementsID);
             ps.setString(2, RequirementsName);
             ps.executeUpdate();
-            System.out.println("Record added to Requirements table");
+            System.out.println("Record added to Controllers.Requirements table");
 
         } catch (Exception exception) {
             System.out.println(exception.getMessage());

@@ -1,3 +1,7 @@
+package Controllers;
+
+import Server.Main;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -7,7 +11,7 @@ public class Cleaned {
             PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Requirements (CleanedID) VALUES (?)");
             ps.setInt(1, CleanedID);
             ps.executeUpdate();
-            System.out.println("Record added to Cleaned table");
+            System.out.println("Record added to Controllers.Cleaned table");
 
         } catch (Exception exception) {
             System.out.println(exception.getMessage());
@@ -21,7 +25,7 @@ public class Cleaned {
 
             ResultSet results = ps.executeQuery();
             while (results.next()) {
-                boolean CleanedID = updateCleaned();
+                int CleanedID = results.getInt(1);
                 System.out.println(CleanedID);
             }
 
@@ -32,11 +36,11 @@ public class Cleaned {
     }
 
 
-    public static void updateCleaned(boolean CleanedID) {
+    public static void updateCleaned(int CleanedID) {
         try {
 
             PreparedStatement ps = Main.db.prepareStatement("UPDATE Cleaned SET CleanedID = ?");
-            ps.setBoolean(1, CleanedID);
+            ps.setInt(1, CleanedID);
 
         } catch (Exception e) {
 

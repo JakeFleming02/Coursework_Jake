@@ -1,3 +1,7 @@
+package Controllers;
+
+import Server.Main;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -9,7 +13,7 @@ public class Rooms {
             ps.setString(2, RoomName);
             ps.setString(3, RoomLocation);
             ps.executeUpdate();
-            System.out.println("Record added to Rooms table");
+            System.out.println("Record added to Controllers.Rooms table");
 
         } catch (Exception exception) {
             System.out.println(exception.getMessage());

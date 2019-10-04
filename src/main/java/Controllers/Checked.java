@@ -1,13 +1,17 @@
+package Controllers;
+
+import Server.Main;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class Checked {
-    public static void insertChecked(int CheckedID, String CheckedName, String CheckedLocation) {
+    public static void insertChecked(int CheckedID) {
         try {
             PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Requirements (CheckedID) VALUES (?)");
             ps.setInt(1, CheckedID);
             ps.executeUpdate();
-            System.out.println("Record added to Checked table");
+            System.out.println("Record added to Controllers.Checked table");
 
         } catch (Exception exception) {
             System.out.println(exception.getMessage());
@@ -21,7 +25,7 @@ public class Checked {
 
             ResultSet results = ps.executeQuery();
             while (results.next()) {
-                boolean CheckedID = updateChecked();
+                int CheckedID = results.getInt(1);
                 System.out.println(CheckedID);
             }
 
@@ -32,11 +36,11 @@ public class Checked {
     }
 
 
-    public static void updateChecked (boolean CheckedID){
+    public static void updateChecked (int CheckedID){
         try {
 
             PreparedStatement ps = Main.db.prepareStatement("UPDATE Checked SET CheckedID = ?");
-            ps.setBoolean(1, CheckedID);
+            ps.setInt(1, CheckedID);
 
         } catch (Exception e) {
 

@@ -1,3 +1,7 @@
+package Controllers;
+
+import Server.Main;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -7,7 +11,7 @@ public class OutOfOrder {
             PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Requirements (OutOfOrderID) VALUES (?)");
             ps.setInt(1, OutOfOrderID);
             ps.executeUpdate();
-            System.out.println("Record added to OutOfOrder table");
+            System.out.println("Record added to Controllers.OutOfOrder table");
 
         } catch (Exception exception) {
             System.out.println(exception.getMessage());
@@ -21,7 +25,7 @@ public class OutOfOrder {
 
             ResultSet results = ps.executeQuery();
             while (results.next()) {
-                boolean OutOfOrderID = OutOfOrder();
+                int OutOfOrderID = results.getInt(1);
                 System.out.println(OutOfOrderID);
             }
 
@@ -32,11 +36,11 @@ public class OutOfOrder {
     }
 
 
-    public static void updateOutOfOrder(boolean OutOfOrderID) {
+    public static void updateOutOfOrder(int OutOfOrderID) {
         try {
 
             PreparedStatement ps = Main.db.prepareStatement("UPDATE OutOfOrder SET OutOfOrderID = ?");
-            ps.setBoolean(1, OutOfOrderID);
+            ps.setInt(1, OutOfOrderID);
 
         } catch (Exception e) {
 
