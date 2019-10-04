@@ -1,7 +1,13 @@
 package Controllers;
 
 import Server.Main;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -19,20 +25,28 @@ public class Checked {
         }
     }
 
-    public static void listChecked() {
+
+    @GET
+    @Path("list")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String listChecked() {
+        System.out.println("Checked/list");
+        JSONArray list = new JSONArray();
         try {
             PreparedStatement ps = Main.db.prepareStatement("SELECT CheckedID FROM Checked");
 
             ResultSet results = ps.executeQuery();
             while (results.next()) {
-                int CheckedID = results.getInt(1);
-                System.out.println(CheckedID);
+                JSONObject item = new JSONObject();
+                item.put("CheckedID", results.getInt(1));
+                list.add(item);
             }
+            return list.toString();
 
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to list items, please see server console for more info.\"}";
         }
-
     }
 
 

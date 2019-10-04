@@ -1,7 +1,13 @@
 package Controllers;
 
 import Server.Main;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -20,19 +26,26 @@ public class Requirements {
         }
     }
 
-    public static void listRequirements() {
+    @GET
+    @Path("list")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String listRequirements() {
+        System.out.println("thing/list");
+        JSONArray list = new JSONArray();
         try {
             PreparedStatement ps = Main.db.prepareStatement("SELECT RequirementsID,RequirementsName FROM Requirements");
 
             ResultSet results = ps.executeQuery();
             while (results.next()) {
-                int RequirementsID = results.getInt(1);
-                String RequirementsName = results.getString(2);
-                System.out.println(RequirementsID + " " + RequirementsName);
+                JSONObject item = new JSONObject();
+                item.put("RequirementsID", results.getInt(1));
+                item.put("RequirementsName", results.getString(2));
+                list.add(item);
             }
-
+            return list.toString();
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to list items, please see server console for more info.\"}";
         }
 
     }
