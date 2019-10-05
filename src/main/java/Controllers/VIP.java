@@ -1,36 +1,57 @@
 package Controllers;
 
 import Server.Main;
+import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class VIP {
-    public static void insertVIP(int VIPID, String VIPName, String VIPLocation) {
+    @POST
+    @Path("new")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String insertVIP(
+            @FormDataParam("VIPID") Integer VIPID){
         try {
+            if (VIPID == null) {
+                throw new Exception("One or more form data parameters are missing in the HTTP request.");
+            }
+            System.out.println("thing/new VIPID=" + VIPID);
             PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Requirements (VIPID) VALUES (?)");
             ps.setInt(1, VIPID);
             ps.executeUpdate();
-            System.out.println("Record added to Controllers.VIP table");
+            return "{\"status\": \"OK\"}";
 
         } catch (Exception exception) {
-            System.out.println(exception.getMessage());
-            System.out.println("Error: Something as gone wrong. Please contact the administrator with the error code WC-WA.");
+            System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to create new item, please see server console for more info.\"}";
         }
     }
 
-    public static void listVIP() {
+    @GET
+    @Path("list")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String listVIP() {
+        System.out.println("thing/list");
+        JSONArray list = new JSONArray();
         try {
             PreparedStatement ps = Main.db.prepareStatement("SELECT VIPID FROM VIP");
 
             ResultSet results = ps.executeQuery();
             while (results.next()) {
-                int VIPID = results.getInt(1);
-                System.out.println(VIPID);
+                JSONObject item = new JSONObject();
+                item.put("VIPID", results.getInt(1));
+                list.add(item);
             }
-
+            return list.toString();
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to list items, please see server console for more info.\"}";
         }
 
     }

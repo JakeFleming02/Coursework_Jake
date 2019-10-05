@@ -1,27 +1,35 @@
 package Controllers;
 
 import Server.Main;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class ToBeCleaned {
-        public static void insertToBeCleaned(int ToBeCleanedID, String ToBeCleanedName, String ToBeCleanedLocation) {
+    @POST
+    @Path("new")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String insertToBeCleaned(
+            @FormDataParam("ToBeCleanedID") Integer ToBeCleanedID){
             try {
+                if (listToBeCleaned() == null) {
+                    throw new Exception("One or more form data parameters are missing in the HTTP request.");
+                }
+                System.out.println("thing/new ToBeCleanedID=" + ToBeCleanedID);
                 PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Requirements (ToBeCleanedID) VALUES (?)");
                 ps.setInt(1, ToBeCleanedID);
                 ps.executeUpdate();
-                System.out.println("Record added to Controllers.ToBeCleaned table");
+                return "{\"status\": \"OK\"}";
 
             } catch (Exception exception) {
-                System.out.println(exception.getMessage());
-                System.out.println("Error: Something as gone wrong. Please contact the administrator with the error code WC-WA.");
+                System.out.println("Database error: " + exception.getMessage());
+                return "{\"error\": \"Unable to create new item, please see server console for more info.\"}";
             }
         }
 

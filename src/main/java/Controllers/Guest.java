@@ -1,28 +1,36 @@
 package Controllers;
 
 import Server.Main;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class Guest {
-    public static void insertGuest(int GuestID, String GuestName) {
+    @POST
+    @Path("new")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String insertGuest(
+            @FormDataParam("GuestID") Integer GuestID, @FormDataParam("GuestName") String GuestName) {
         try {
+            if (GuestID == null || GuestName == null) {
+                throw new Exception("One or more form data parameters are missing in the HTTP request.");
+            }
+            System.out.println("thing/new GuestID=" + GuestID);
             PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Guest (int GuestID, String GuestName) VALUES (?, ?)");
             ps.setInt(1, GuestID);
             ps.setString(2, GuestName);
             ps.executeUpdate();
-            System.out.println("Record added to Guests table");
+            return "{\"status\": \"OK\"}";
 
         } catch (Exception exception) {
-            System.out.println(exception.getMessage());
-            System.out.println("Error: Something as gone wrong. Please contact the administrator with the error code WC-WA.");
+            System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to create new item, please see server console for more info.\"}";
         }
     }
 

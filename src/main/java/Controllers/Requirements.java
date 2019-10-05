@@ -1,28 +1,36 @@
 package Controllers;
 
 import Server.Main;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class Requirements {
-    public static void insertRequirements(int RequirementsID, String RequirementsName) {
+    @POST
+    @Path("new")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String insertRequirements(
+            @FormDataParam("RequirementsID") Integer RequirementsID, @FormDataParam("RequirementsName") String RequirementsName){
         try {
+            if (RequirementsID == null || RequirementsName == null) {
+                throw new Exception("One or more form data parameters are missing in the HTTP request.");
+            }
+            System.out.println("thing/new RequirementsID=" + RequirementsID);
             PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Requirements (int RequirementsID, String RequirementsName) VALUES (?, ?)");
             ps.setInt(1, RequirementsID);
             ps.setString(2, RequirementsName);
             ps.executeUpdate();
-            System.out.println("Record added to Controllers.Requirements table");
+            return "{\"status\": \"OK\"}";
 
         } catch (Exception exception) {
-            System.out.println(exception.getMessage());
-            System.out.println("Error: Something as gone wrong. Please contact the administrator with the error code WC-WA.");
+            System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to create new item, please see server console for more info.\"}";
         }
     }
 
