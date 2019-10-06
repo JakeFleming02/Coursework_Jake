@@ -27,7 +27,7 @@ public class Rooms {
             ps.setInt(1, RoomID);
             ps.setString(2, RoomName);
             ps.setString(3, RoomLocation);
-            ps.executeUpdate();
+            ps.execute();
             return "{\"status\": \"OK\"}";
 
         } catch (Exception exception) {
@@ -63,33 +63,76 @@ public class Rooms {
     }
 
 
-    public static void updateUser(int RoomID, String RoomName, String RoomLocation) {
+    @POST
+    @Path("update")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String updateRooms(
+            @FormDataParam("RoomID") Integer RoomID, @FormDataParam("RoomName") String RoomName, @FormDataParam("RoomLocation") String RoomLocation) {
         try {
+            if (RoomID == null || RoomName == null || RoomLocation == null) {
+                throw new Exception("One or more form data parameters are missing in the HTTP request.");
+            }
+            System.out.println("thing/update RoomID=" + RoomID);
 
             PreparedStatement ps = Main.db.prepareStatement("UPDATE Rooms SET RoomName = ?, RoomLocation = ? WHERE RoomID = ?");
-            ps.setInt(1, RoomID);
-            ps.setString(2, RoomName);
-            ps.setString(3, RoomLocation);
-            ps.executeUpdate();
+            ps.setString(1, RoomName);
+            ps.setString(2, RoomLocation);
+            ps.setInt(3, RoomID);
+            ps.execute();
+            return "{\"status\": \"OK\"}";
 
-        } catch (Exception e) {
-
-            System.out.println(e.getMessage());
-
+        } catch (Exception exception) {
+            System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to update item, please see server console for more info.\"}";
         }
 
     }
 
-    public static void deleteRoom(int RoomID) {
+    @POST
+    @Path("delete")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String deleteRooms(@FormDataParam("RoomID") Integer RoomID) {
         try {
+            if (RoomID == null) {
+                throw new Exception("One or more form data parameters are missing in the HTTP request.");
+            }
+            System.out.println("thing/delete RoomID=" + RoomID);
 
             PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Rooms WHERE RoomID = ?");
             ps.setInt(1, RoomID);
-            ps.executeUpdate();
+            ps.execute();
+            return "{\"status\": \"OK\"}";
 
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        } catch (Exception exception) {
+            System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to delete item, please see server console for more info.\"}";
+        }
+    }
 
+    @GET
+    @Path("get/{RoomID}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getVIP(@PathParam("RoomID") Integer RoomID) {
+        if (RoomID == null) {
+            throw new Exception("Room's 'RoomID' is missing in the HTTP request's URL.");
+        }
+        System.out.println("thing/get/" + RoomID);
+        JSONObject item = new JSONObject();
+        try {
+            PreparedStatement ps = Main.db.prepareStatement("SELECT RoomName, RoomLocation FROM Rooms WHERE RoomID = ?");
+            ps.setInt(1, RoomID);
+            ResultSet results = ps.executeQuery();
+            if (results.next()) {
+                item.put("RoomID", RoomID);
+                item.put("RoomName", results.getString(1));
+                item.put("RoomLocation", results.getString(1));
+            }
+            return item.toString();
+        } catch (Exception exception) {
+            System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to get item, please see server console for more info.\"}";
         }
     }
 }

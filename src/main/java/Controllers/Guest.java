@@ -25,7 +25,7 @@ public class Guest {
             PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Guest (int GuestID, String GuestName) VALUES (?, ?)");
             ps.setInt(1, GuestID);
             ps.setString(2, GuestName);
-            ps.executeUpdate();
+            ps.execute();
             return "{\"status\": \"OK\"}";
 
         } catch (Exception exception) {
@@ -60,32 +60,74 @@ public class Guest {
     }
 
 
-    public static void updateUser(int GuestID, String GuestName) {
+    @POST
+    @Path("update")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String updateGuest(
+            @FormDataParam("GuestID") Integer GuestID, @FormDataParam("GuestName") String GuestName) {
         try {
+            if (GuestID == null || GuestName == null) {
+                throw new Exception("One or more form data parameters are missing in the HTTP request.");
+            }
+            System.out.println("thing/update GuestID=" + GuestID);
 
             PreparedStatement ps = Main.db.prepareStatement("UPDATE Guest SET GuestName = ? WHERE GuestID = ?");
             ps.setInt(1, GuestID);
             ps.setString(2, GuestName);
-            ps.executeUpdate();
+            ps.execute();
+            return "{\"status\": \"OK\"}";
 
-        } catch (Exception e) {
-
-            System.out.println(e.getMessage());
-
+        } catch (Exception exception) {
+            System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to update item, please see server console for more info.\"}";
         }
 
     }
 
-    public static void deleteRequirements(int GuestID) {
+    @POST
+    @Path("delete")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String deleteGuest(@FormDataParam("GuestID") Integer GuestID) {
         try {
+            if (GuestID == null) {
+                throw new Exception("One or more form data parameters are missing in the HTTP request.");
+            }
+            System.out.println("thing/delete GuestID=" + GuestID);
 
             PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Guest WHERE GuestID = ?");
             ps.setInt(1, GuestID);
-            ps.executeUpdate();
+            ps.execute();
+            return "{\"status\": \"OK\"}";
 
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        } catch (Exception exception) {
+            System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to delete item, please see server console for more info.\"}";
+        }
+    }
 
+    @GET
+    @Path("get/{GuestID}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getVIP(@PathParam("GuestID") Integer GuestID) {
+        if (GuestID == null) {
+            throw new Exception("Guest's 'GuestID' is missing in the HTTP request's URL.");
+        }
+        System.out.println("thing/get/" + GuestID);
+        JSONObject item = new JSONObject();
+        try {
+            PreparedStatement ps = Main.db.prepareStatement("SELECT GuestName FROM Guest WHERE GuestID = ?");
+            ps.setInt(1, GuestID);
+            ResultSet results = ps.executeQuery();
+            if (results.next()) {
+                item.put("GuestID", GuestID);
+                item.put("GuestCheck", results.getString(1));
+            }
+            return item.toString();
+        } catch (Exception exception) {
+            System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to get item, please see server console for more info.\"}";
         }
     }
 }

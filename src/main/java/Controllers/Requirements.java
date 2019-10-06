@@ -25,7 +25,7 @@ public class Requirements {
             PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Requirements (int RequirementsID, String RequirementsName) VALUES (?, ?)");
             ps.setInt(1, RequirementsID);
             ps.setString(2, RequirementsName);
-            ps.executeUpdate();
+            ps.execute();
             return "{\"status\": \"OK\"}";
 
         } catch (Exception exception) {
@@ -59,32 +59,74 @@ public class Requirements {
     }
 
 
-    public static void updateUser(int RequirementsID, String RequirementsName) {
+    @POST
+    @Path("update")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String updateRequirements(
+            @FormDataParam("RequirementsID") Integer RequirementsID, @FormDataParam("RequirementsName") String RequirementsName) {
         try {
+            if (RequirementsID == null || RequirementsName == null) {
+                throw new Exception("One or more form data parameters are missing in the HTTP request.");
+            }
+            System.out.println("thing/update RequirementsID=" + RequirementsID);
 
             PreparedStatement ps = Main.db.prepareStatement("UPDATE Requirements SET RequirementsName = ? WHERE RequirementsID = ?");
-            ps.setInt(1, RequirementsID);
-            ps.setString(2, RequirementsName);
-            ps.executeUpdate();
+            ps.setString(1, RequirementsName);
+            ps.setInt(2, RequirementsID);
+            ps.execute();
+            return "{\"status\": \"OK\"}";
 
-        } catch (Exception e) {
-
-            System.out.println(e.getMessage());
-
+        } catch (Exception exception) {
+            System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to update item, please see server console for more info.\"}";
         }
 
     }
 
-    public static void deleteRequirements(int RequirementsID) {
+    @POST
+    @Path("delete")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String deleteRequirements(@FormDataParam("RequirementsID") Integer RequirementsID) {
         try {
+            if (RequirementsID == null) {
+                throw new Exception("One or more form data parameters are missing in the HTTP request.");
+            }
+            System.out.println("thing/delete RequirementsID=" + RequirementsID);
 
             PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Requirements WHERE RequirementsID = ?");
             ps.setInt(1, RequirementsID);
-            ps.executeUpdate();
+            ps.execute();
+            return "{\"status\": \"OK\"}";
 
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        } catch (Exception exception) {
+            System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to delete item, please see server console for more info.\"}";
+        }
+    }
 
+    @GET
+    @Path("get/{RequirementsID}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getVIP(@PathParam("RequirementsID") Integer RequirementsID) {
+        if (RequirementsID == null) {
+            throw new Exception("Requirements's 'RequirementsID' is missing in the HTTP request's URL.");
+        }
+        System.out.println("thing/get/" + RequirementsID);
+        JSONObject item = new JSONObject();
+        try {
+            PreparedStatement ps = Main.db.prepareStatement("SELECT RequirementsName FROM Requirements WHERE RequirementsID = ?");
+            ps.setInt(1, RequirementsID);
+            ResultSet results = ps.executeQuery();
+            if (results.next()) {
+                item.put("RequirementsID", RequirementsID);
+                item.put("RequirementsCheck", results.getString(1));
+            }
+            return item.toString();
+        } catch (Exception exception) {
+            System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to get item, please see server console for more info.\"}";
         }
     }
 }
