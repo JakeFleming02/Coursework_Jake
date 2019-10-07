@@ -10,6 +10,7 @@ import javax.ws.rs.core.MediaType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+@Path("Guest/")
 public class Guest {
     @POST
     @Path("new")

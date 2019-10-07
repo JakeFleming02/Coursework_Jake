@@ -9,7 +9,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
+@Path("Checked/")
 public class Checked {
     @POST
     @Path("new")
@@ -23,7 +23,7 @@ public class Checked {
             }
             System.out.println("thing/new CheckedID=" + CheckedID);
 
-            PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Requirements (CheckedID, CheckedCheck) VALUES (?, ?)");
+            PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Checked (CheckedID, CheckedCheck) VALUES (?, ?)");
             ps.setInt(1, CheckedID);
             ps.setBoolean(2, CheckedCheck);
             ps.execute();

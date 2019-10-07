@@ -10,6 +10,7 @@ import javax.ws.rs.core.MediaType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+@Path("OutOfOrder/")
 public class OutOfOrder {
     @POST
     @Path("new")
@@ -22,7 +23,7 @@ public class OutOfOrder {
                 throw new Exception("One or more form data parameters are missing in the HTTP request.");
             }
             System.out.println("thing/new OutOfOrderID=" + OutOfOrderID);
-            PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Requirements (OutOfOrderID, OutOfOrderCheck) VALUES (?, ?)");
+            PreparedStatement ps = Main.db.prepareStatement("INSERT INTO OutOfOrder (OutOfOrderID, OutOfOrderCheck) VALUES (?, ?)");
             ps.setInt(1, OutOfOrderID);
             ps.setBoolean(2, OutOfOrderCheck);
             ps.execute();

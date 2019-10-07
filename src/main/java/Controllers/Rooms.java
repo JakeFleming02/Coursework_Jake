@@ -10,6 +10,7 @@ import javax.ws.rs.core.MediaType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+@Path("Rooms/")
 public class Rooms {
     @POST
     @Path("new")
@@ -23,7 +24,7 @@ public class Rooms {
             }
             System.out.println("thing/new RoomID=" + RoomID);
 
-            PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Requirements (RoomID, RoomName, RoomLocation) VALUES (?, ?, ?)");
+            PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Rooms (RoomID, RoomName, RoomLocation) VALUES (?, ?, ?)");
             ps.setInt(1, RoomID);
             ps.setString(2, RoomName);
             ps.setString(3, RoomLocation);

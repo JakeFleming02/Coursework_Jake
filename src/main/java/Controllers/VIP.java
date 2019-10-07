@@ -10,6 +10,7 @@ import javax.ws.rs.core.MediaType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+@Path("VIP/")
 public class VIP {
     @POST
     @Path("new")
@@ -22,7 +23,7 @@ public class VIP {
                 throw new Exception("One or more form data parameters are missing in the HTTP request.");
             }
             System.out.println("thing/new VIPID=" + VIPID);
-            PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Requirements (VIPID, VIPCheck) VALUES (?, ?)");
+            PreparedStatement ps = Main.db.prepareStatement("INSERT INTO VIP (VIPID, VIPCheck) VALUES (?, ?)");
             ps.setInt(1, VIPID);
             ps.setBoolean(2, VIPCheck);
             ps.execute();

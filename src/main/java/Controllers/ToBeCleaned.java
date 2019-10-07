@@ -10,6 +10,7 @@ import javax.ws.rs.core.MediaType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+@Path("ToBeCleaned/")
 public class ToBeCleaned {
     @POST
     @Path("new")
@@ -22,7 +23,7 @@ public class ToBeCleaned {
                     throw new Exception("One or more form data parameters are missing in the HTTP request.");
                 }
                 System.out.println("thing/new ToBeCleanedID=" + ToBeCleanedID);
-                PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Requirements (ToBeCleanedID, ToBeCleanedID) VALUES (?, ?)");
+                PreparedStatement ps = Main.db.prepareStatement("INSERT INTO ToBeCleaned (ToBeCleanedID, ToBeCleanedID) VALUES (?, ?)");
                 ps.setInt(1, ToBeCleanedID);
                 ps.setBoolean(2, ToBeCleanedCheck);
                 ps.execute();
