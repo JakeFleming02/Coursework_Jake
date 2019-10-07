@@ -110,7 +110,7 @@ public class Cleaned {
     @GET
     @Path("get/{CleanedID}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getCleaned(@PathParam("CleanedID") Integer CleanedID) {
+    public String getCleaned(@PathParam("CleanedID") Integer CleanedID) throws Exception {
         if (CleanedID == null) {
             throw new Exception("Cleaned's 'CleanedID' is missing in the HTTP request's URL.");
         }

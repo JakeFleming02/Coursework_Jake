@@ -109,7 +109,7 @@ public class VIP {
     @GET
     @Path("get/{VIPID}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getVIP(@PathParam("VIPID") Integer VIPID) {
+    public String getVIP(@PathParam("VIPID") Integer VIPID) throws Exception {
         if (VIPID == null) {
             throw new Exception("VIP's 'VIPID' is missing in the HTTP request's URL.");
         }

@@ -109,7 +109,7 @@ public class OutOfOrder {
     @GET
     @Path("get/{OutOfOrderID}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getOutOfOrder(@PathParam("OutOfOrderID") Integer OutOfOrderID) {
+    public String getOutOfOrder(@PathParam("OutOfOrderID") Integer OutOfOrderID) throws Exception {
         if (OutOfOrderID == null) {
             throw new Exception("OutOfOrder's 'OutOfOrderID' is missing in the HTTP request's URL.");
         }

@@ -112,7 +112,7 @@ public class Checked {
     @GET
     @Path("get/{CheckedID}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getChecked(@PathParam("CheckedID") Integer CheckedID) {
+    public String getChecked(@PathParam("CheckedID") Integer CheckedID) throws Exception {
         if (CheckedID == null) {
             throw new Exception("Checked's 'CheckedID' is missing in the HTTP request's URL.");
         }

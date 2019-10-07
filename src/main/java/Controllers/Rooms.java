@@ -114,7 +114,7 @@ public class Rooms {
     @GET
     @Path("get/{RoomID}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getVIP(@PathParam("RoomID") Integer RoomID) {
+    public String getVIP(@PathParam("RoomID") Integer RoomID) throws Exception {
         if (RoomID == null) {
             throw new Exception("Room's 'RoomID' is missing in the HTTP request's URL.");
         }

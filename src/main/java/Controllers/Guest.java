@@ -110,7 +110,7 @@ public class Guest {
     @GET
     @Path("get/{GuestID}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getVIP(@PathParam("GuestID") Integer GuestID) {
+    public String getVIP(@PathParam("GuestID") Integer GuestID) throws Exception {
         if (GuestID == null) {
             throw new Exception("Guest's 'GuestID' is missing in the HTTP request's URL.");
         }

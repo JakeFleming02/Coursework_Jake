@@ -109,7 +109,7 @@ public class Requirements {
     @GET
     @Path("get/{RequirementsID}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getVIP(@PathParam("RequirementsID") Integer RequirementsID) {
+    public String getVIP(@PathParam("RequirementsID") Integer RequirementsID) throws Exception {
         if (RequirementsID == null) {
             throw new Exception("Requirements's 'RequirementsID' is missing in the HTTP request's URL.");
         }
