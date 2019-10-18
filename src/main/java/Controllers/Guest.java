@@ -17,18 +17,18 @@ public class Guest {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public String insertGuest(
-            @FormDataParam("GuestID") Integer GuestID, @FormDataParam("GuestName") String GuestName, @FormDataParam("GuestArrive") String GuestArrive, @FormDataParam("GuestLeave") String GuestLeave, @FormDataParam("Requirements") String Requirements) {
+            @FormDataParam("GuestID") Integer GuestID, @FormDataParam("GuestName") String GuestName, @FormDataParam("GuestArrive") String GuestArrive, @FormDataParam("GuestLeave") String GuestLeave, @FormDataParam("VIP") Boolean VIP) {
         try {
-            if (GuestID == null || GuestName == null || GuestArrive == null || GuestLeave == null || Requirements == null) {
+            if (GuestID == null || GuestName == null || GuestArrive == null || GuestLeave == null || VIP == null) {
                 throw new Exception("One or more form data parameters are missing in the HTTP request.");
             }
-            System.out.println("thing/new GuestID=" + GuestID);
-            PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Guest (GuestID, GuestName, GuestArrive, GuestLeave, Requirements) VALUES (?, ?, ?, ?, ?)");
+            System.out.println("Guest/new GuestID=" + GuestID);
+            PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Guest (GuestID, GuestName, GuestArrive, GuestLeave, VIP) VALUES (?, ?, ?, ?, ?)");
             ps.setInt(1, GuestID);
             ps.setString(2, GuestName);
             ps.setString(3, GuestArrive);
             ps.setString(4, GuestLeave);
-            ps.setString(5, Requirements);
+            ps.setBoolean(5, VIP);
             ps.execute();
             return "{\"status\": \"OK\"}";
 
@@ -42,10 +42,10 @@ public class Guest {
     @Path("list")
     @Produces(MediaType.APPLICATION_JSON)
     public String listGuest() {
-        System.out.println("thing/list");
+        System.out.println("Guest/list");
         JSONArray list = new JSONArray();
         try {
-            PreparedStatement ps = Main.db.prepareStatement("SELECT GuestID, GuestName, GuestArrive, GuestLeave, Requirements FROM Guest");
+            PreparedStatement ps = Main.db.prepareStatement("SELECT GuestID, GuestName, GuestArrive, GuestLeave, VIP FROM Guest");
 
             ResultSet results = ps.executeQuery();
             while (results.next()) {
@@ -54,7 +54,7 @@ public class Guest {
                 item.put("GuestName", results.getString(2));
                 item.put("GuestArrive", results.getString(3));
                 item.put("GuestLeave", results.getString(4));
-                item.put("Requirements", results.getString(5));
+                item.put("VIP", results.getBoolean(5));
                 list.add(item);
             }
             return list.toString();
@@ -72,19 +72,19 @@ public class Guest {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public String updateGuest(
-            @FormDataParam("GuestID") Integer GuestID, @FormDataParam("GuestName") String GuestName, @FormDataParam("GuestArrive") String GuestArrive, @FormDataParam("GuestLeave") String GuestLeave, @FormDataParam("Requirements") String Requirements) {
+            @FormDataParam("GuestID") Integer GuestID, @FormDataParam("GuestName") String GuestName, @FormDataParam("GuestArrive") String GuestArrive, @FormDataParam("GuestLeave") String GuestLeave, @FormDataParam("VIP") Boolean VIP) {
         try {
-            if (GuestID == null || GuestName == null || GuestArrive == null || GuestLeave == null || Requirements == null) {
+            if (GuestID == null || GuestName == null || GuestArrive == null || GuestLeave == null || VIP == null) {
                 throw new Exception("One or more form data parameters are missing in the HTTP request.");
             }
-            System.out.println("thing/update GuestID=" + GuestID);
+            System.out.println("Guest/update GuestID=" + GuestID);
 
-            PreparedStatement ps = Main.db.prepareStatement("UPDATE Guest SET GuestName = ?, GuestArrive = ?, GuestLeave = ?, Requirements = ? WHERE GuestID = ?");
-            ps.setInt(1, GuestID);
-            ps.setString(2, GuestName);
-            ps.setString(3, GuestArrive);
-            ps.setString(4, GuestLeave);
-            ps.setString(5, Requirements);
+            PreparedStatement ps = Main.db.prepareStatement("UPDATE Guest SET GuestName = ?, GuestArrive = ?, GuestLeave = ?, VIP = ? WHERE GuestID = ?");
+            ps.setString(1, GuestName);
+            ps.setString(2, GuestArrive);
+            ps.setString(3, GuestLeave);
+            ps.setBoolean(4, VIP);
+            ps.setInt(5, GuestID);
             ps.execute();
             return "{\"status\": \"OK\"}";
 
@@ -104,7 +104,7 @@ public class Guest {
             if (GuestID == null) {
                 throw new Exception("One or more form data parameters are missing in the HTTP request.");
             }
-            System.out.println("thing/delete GuestID=" + GuestID);
+            System.out.println("Guest/delete GuestID=" + GuestID);
 
             PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Guest WHERE GuestID = ?");
             ps.setInt(1, GuestID);
@@ -124,7 +124,7 @@ public class Guest {
         if (GuestID == null) {
             throw new Exception("Guest's 'GuestID' is missing in the HTTP request's URL.");
         }
-        System.out.println("thing/get/" + GuestID);
+        System.out.println("Guest/get/" + GuestID);
         JSONObject item = new JSONObject();
         try {
             PreparedStatement ps = Main.db.prepareStatement("SELECT GuestName FROM Guest WHERE GuestID = ?");

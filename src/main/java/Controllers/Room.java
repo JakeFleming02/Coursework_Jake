@@ -17,21 +17,19 @@ public class Room {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public String insertRoom(
-            @FormDataParam("RoomID") Integer RoomID, @FormDataParam("RoomName") String RoomName, @FormDataParam("RoomLocation") String RoomLocation, @FormDataParam("Cleaned") Boolean Cleaned, @FormDataParam("Checked") Boolean Checked, @FormDataParam("ToBeCleaned") Boolean ToBeCleaned, @FormDataParam("OutOfOrder") Boolean OutOfOrder, @FormDataParam("VIP") Boolean VIP) {
+            @FormDataParam("RoomID") Integer RoomID, @FormDataParam("RoomName") String RoomName, @FormDataParam("RoomLocation") String RoomLocation, @FormDataParam("Cleaned") Boolean Cleaned, @FormDataParam("Checked") Boolean Checked, @FormDataParam("OutOfOrder") Boolean OutOfOrder) {
         try {
-            if (RoomID == null || RoomName == null || RoomLocation == null || Cleaned == null || Checked == null || ToBeCleaned == null || OutOfOrder == null || VIP == null) {
+            if (RoomID == null || RoomName == null || RoomLocation == null || Cleaned == null || Checked == null || OutOfOrder == null) {
                 throw new Exception("One or more form data parameters are missing in the HTTP request.");
             }
             System.out.println("room/new RoomID=" + RoomID);
-            PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Room (RoomID, RoomName, RoomLocation, Cleaned, Checked, ToBeCleaned, OutOfOrder, VIP) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Room (RoomID, RoomName, RoomLocation, Cleaned, Checked, OutOfOrder) VALUES (?, ?, ?, ?, ?, ?)");
             ps.setInt(1, RoomID);
             ps.setString(2, RoomName);
             ps.setString(3, RoomLocation);
             ps.setBoolean(4, Cleaned);
             ps.setBoolean(5, Checked);
-            ps.setBoolean(6, ToBeCleaned);
-            ps.setBoolean(7, OutOfOrder);
-            ps.setBoolean(8, VIP);
+            ps.setBoolean(6, OutOfOrder);
             ps.execute();
             return "{\"status\": \"OK\"}";
 
@@ -48,7 +46,7 @@ public class Room {
         System.out.println("room/list");
         JSONArray list = new JSONArray();
         try {
-            PreparedStatement ps = Main.db.prepareStatement("SELECT RoomID, RoomName, RoomLocation, Cleaned, Checked, ToBeCleaned, OutOfOrder, VIP FROM Room");
+            PreparedStatement ps = Main.db.prepareStatement("SELECT RoomID, RoomName, RoomLocation, Cleaned, Checked, OutOfOrder FROM Room");
 
             ResultSet results = ps.executeQuery();
             while (results.next()) {
@@ -58,9 +56,7 @@ public class Room {
                 item.put("RoomLocation", results.getString(3));
                 item.put("Cleaned", results.getString(4));
                 item.put("Checked", results.getString(5));
-                item.put("ToBeCleaned", results.getString(6));
-                item.put("OutOfOrder", results.getString(7));
-                item.put("VIP", results.getString(8));
+                item.put("OutOfOrder", results.getString(6));
                 list.add(item);
             }
             return list.toString();
@@ -78,22 +74,20 @@ public class Room {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public String updateRoom(
-            @FormDataParam("RoomID") Integer RoomID, @FormDataParam("RoomName") String RoomName, @FormDataParam("RoomLocation") String RoomLocation, @FormDataParam("Cleaned") Boolean Cleaned, @FormDataParam("Checked") Boolean Checked, @FormDataParam("ToBeCleaned") Boolean ToBeCleaned, @FormDataParam("OutOfOrder") Boolean OutOfOrder, @FormDataParam("VIP") Boolean VIP) {
+            @FormDataParam("RoomID") Integer RoomID, @FormDataParam("RoomName") String RoomName, @FormDataParam("RoomLocation") String RoomLocation, @FormDataParam("Cleaned") Boolean Cleaned, @FormDataParam("Checked") Boolean Checked, @FormDataParam("ToBeCleaned") Boolean ToBeCleaned, @FormDataParam("OutOfOrder") Boolean OutOfOrder) {
         try {
-            if (RoomID == null || RoomName == null || RoomLocation == null || Cleaned == null || Checked == null || ToBeCleaned == null || OutOfOrder == null || VIP == null) {
+            if (RoomID == null || RoomName == null || RoomLocation == null || Cleaned == null || Checked == null || OutOfOrder == null) {
                 throw new Exception("One or more form data parameters are missing in the HTTP request.");
             }
             System.out.println("Room/update RoomID=" + RoomID);
 
-            PreparedStatement ps = Main.db.prepareStatement("UPDATE Room SET RoomName = ?, RoomLocation = ?, Cleaned = ?, Checked = ?, ToBeCleaned = ?, OutOfOrder = ?, VIP WHERE RoomID = ?");
+            PreparedStatement ps = Main.db.prepareStatement("UPDATE Room SET RoomName = ?, RoomLocation = ?, Cleaned = ?, Checked = ?, OutOfOrder = ? WHERE RoomID = ?");
             ps.setInt(1, RoomID);
             ps.setString(2, RoomName);
             ps.setString(3, RoomLocation);
             ps.setBoolean(4, Cleaned);
             ps.setBoolean(5, Checked);
-            ps.setBoolean(6, ToBeCleaned);
-            ps.setBoolean(7, OutOfOrder);
-            ps.setBoolean(8, VIP);
+            ps.setBoolean(6, OutOfOrder);
             ps.execute();
             return "{\"status\": \"OK\"}";
 
