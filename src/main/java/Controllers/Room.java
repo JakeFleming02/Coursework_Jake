@@ -82,12 +82,12 @@ public class Room {
             System.out.println("Room/update RoomID=" + RoomID);
 
             PreparedStatement ps = Main.db.prepareStatement("UPDATE Room SET RoomName = ?, RoomLocation = ?, Cleaned = ?, Checked = ?, OutOfOrder = ? WHERE RoomID = ?");
-            ps.setInt(1, RoomID);
-            ps.setString(2, RoomName);
-            ps.setString(3, RoomLocation);
-            ps.setBoolean(4, Cleaned);
-            ps.setBoolean(5, Checked);
-            ps.setBoolean(6, OutOfOrder);
+            ps.setString(1, RoomName);
+            ps.setString(2, RoomLocation);
+            ps.setBoolean(3, Cleaned);
+            ps.setBoolean(4, Checked);
+            ps.setBoolean(5, OutOfOrder);
+            ps.setInt(6, RoomID);
             ps.execute();
             return "{\"status\": \"OK\"}";
 

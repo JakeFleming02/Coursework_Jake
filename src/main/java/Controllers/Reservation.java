@@ -17,16 +17,17 @@ public class Reservation {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public String insertReservation(
-            @FormDataParam("ReservationID") Integer ReservationID, @FormDataParam("GuestID") Integer GuestID, @FormDataParam("RoomID") Integer RoomID){
+            @FormDataParam("ReservationID") Integer ReservationID, @FormDataParam("GuestID") Integer GuestID, @FormDataParam("RoomID") Integer RoomID, @FormDataParam("StaffID") Integer StaffID){
         try {
-            if (ReservationID == null || GuestID == null || RoomID == null) {
+            if (ReservationID == null || GuestID == null || RoomID == null || StaffID == null) {
                 throw new Exception("One or more form data parameters are missing in the HTTP request.");
             }
             System.out.println("Reservation/new ReservationID=" + ReservationID);
-            PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Reservation (ReservationID, GuestID, RoomID) VALUES (?, ?, ?)");
+            PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Reservation (ReservationID, GuestID, RoomID, StaffID) VALUES (?, ?, ?, ?)");
             ps.setInt(1, ReservationID);
             ps.setInt(2, GuestID);
             ps.setInt(3, RoomID);
+            ps.setInt(4, StaffID);
             ps.execute();
             return "{\"status\": \"OK\"}";
 
@@ -43,7 +44,7 @@ public class Reservation {
         System.out.println("Reservation/list");
         JSONArray list = new JSONArray();
         try {
-            PreparedStatement ps = Main.db.prepareStatement("SELECT ReservationID, GuestID, RoomID FROM Reservation");
+            PreparedStatement ps = Main.db.prepareStatement("SELECT ReservationID, GuestID, RoomID, StaffID FROM Reservation");
 
             ResultSet results = ps.executeQuery();
             while (results.next()) {
@@ -51,6 +52,7 @@ public class Reservation {
                 item.put("ReservationID", results.getInt(1));
                 item.put("GuestID", results.getInt(2));
                 item.put("RoomID", results.getInt(3));
+                item.put("StaffID", results.getInt(3));
                 list.add(item);
             }
             return list.toString();
@@ -68,17 +70,18 @@ public class Reservation {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public String updateReservation(
-            @FormDataParam("ReservationID") Integer ReservationID, @FormDataParam("GuestID") Integer GuestID, @FormDataParam("RoomID") Integer RoomID){
+            @FormDataParam("ReservationID") Integer ReservationID, @FormDataParam("GuestID") Integer GuestID, @FormDataParam("RoomID") Integer RoomID, @FormDataParam("StaffID") Integer StaffID){
         try {
-            if (ReservationID == null || GuestID == null || RoomID == null) {
+            if (ReservationID == null || GuestID == null || RoomID == null || StaffID == null) {
                 throw new Exception("One or more form data parameters are missing in the HTTP request.");
             }
             System.out.println("Reservation/update ReservationID=" + ReservationID);
 
-            PreparedStatement ps = Main.db.prepareStatement("UPDATE Reservation SET ReservationName = ?, GuestID = ?, RoomID = ? WHERE ReservationID = ?");
-            ps.setInt(1, ReservationID);
+            PreparedStatement ps = Main.db.prepareStatement("UPDATE Reservation SET GuestID = ?, RoomID = ?, StaffID = ? WHERE ReservationID = ?");
+            ps.setInt(1, StaffID);
             ps.setInt(2, GuestID);
             ps.setInt(3, RoomID);
+            ps.setInt(4, ReservationID);
             ps.execute();
             return "{\"status\": \"OK\"}";
 
