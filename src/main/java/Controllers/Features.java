@@ -10,13 +10,13 @@ import javax.ws.rs.core.MediaType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-@Path("Features/")
+@Path("Features/") //'Jersey' Library, this creates the handler for the /features/new API path which turns the method into a HTTP request handler
 public class Features {
     @POST
     @Path("new")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Consumes(MediaType.MULTIPART_FORM_DATA) //Parameters that need to be populated (form data parameters) which specify the matching form field names
     @Produces(MediaType.APPLICATION_JSON)
-    public String insertFeature(
+    public String insertFeature( //The method is made public so that the Jersey library can interact with it and returns a string (JSON)
             @FormDataParam("FeatureID") Integer FeatureID, @FormDataParam("FeatureName") String FeatureName) {
         try {
             if (FeatureID == null || FeatureName == null) {
@@ -36,11 +36,11 @@ public class Features {
     }
 
     @GET
-    @Path("list")
+    @Path("list") //'Jersey' Library, this creates the handler for the /features/list API path which turns the method into a HTTP request handler
     @Produces(MediaType.APPLICATION_JSON)
-    public String listFeature() {
+    public String listFeature() { //The method is made public so that the Jersey library can interact with it and returns a string (JSON)
         System.out.println("Feature/list");
-        JSONArray list = new JSONArray();
+        JSONArray list = new JSONArray(); //The JSON is prepared using the 'Simple JSON library', a new JSONArray is constructed out of a series of JSONObjects with values extracted from the SQL query
         try {
             PreparedStatement ps = Main.db.prepareStatement("SELECT FeatureID, FeatureName FROM Features");
 
@@ -62,10 +62,10 @@ public class Features {
 
 
     @POST
-    @Path("update")
+    @Path("update") //'Jersey' Library, this creates the handler for the /features/update API path which turns the method into a HTTP request handler
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public String updateFeature(
+    public String updateFeature( //The method is made public so that the Jersey library can interact with it and returns a string (JSON)
             @FormDataParam("FeatureID") Integer FeatureID, @FormDataParam("FeatureName") String FeatureName) {
         try {
             if (FeatureID == null || FeatureName == null) {
@@ -87,10 +87,10 @@ public class Features {
     }
 
     @POST
-    @Path("delete")
+    @Path("delete") //'Jersey' Library, this creates the handler for the /features/delete API path which turns the method into a HTTP request handler
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public String deleteFeature(@FormDataParam("FeatureID") Integer FeatureID) {
+    public String deleteFeature(@FormDataParam("FeatureID") Integer FeatureID) { //The method is made public so that the Jersey library can interact with it and returns a string (JSON)
         try {
             if (FeatureID == null) {
                 throw new Exception("One or more form data parameters are missing in the HTTP request.");
