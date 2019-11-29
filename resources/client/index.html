@@ -10,8 +10,42 @@
 
 <body onload="pageLoad()">
 <div id="content">
-    <div id="testDiv"></div>
+
+    <div id="pageHeader">
+        <h1>All the CRUD ops demoed with guest!</h1>
+        <div class="floatRight"><button id="newButton" class="editButton">Add New guest</button></div>
+    </div>
+
+    <div id="listDiv"></div>
+
+    <div id="editDiv">
+        <h2 id="editHeading"></h2>
+        <form id="guestForm">
+            <div>
+                <label for="guestID" class="label">ID:</label>
+                <input type="text" name="ID" id="guestID">
+            </div>
+            <div>
+                <label for="guestName" class="Name">Name:</label>
+                <input type="text" name="Name" id="guestName">
+            </div>
+            <div>
+                <label for="guestArrive" class="label">Arrive:</label>
+                <input type="text" name="Arrive" id="guestArrive">
+            </div>
+            <div>
+                <label for="guestLeave" class="label">Leave:</label>
+                <input type="text" name="Leave" id="guestLeave">
+            </div>
+            <div>
+                <label for="guestVIP" class="label">VIP:</label>
+                <input type="text" name="VIP" id="guestVIP">
+            </div>
+            <div>
+                <input type="submit" value="Save" id="saveButton">
+                <input type="submit" value="Cancel" id="cancelButton">
+            </div>
+        </form>
+    </div>
 </div>
 </body>
-
-</html>
