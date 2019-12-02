@@ -10,10 +10,10 @@ function pageLoad() {
         '<th class="last">Options</th>' +
         '</tr>';
 
-    fetch('/guest/list', {method: 'get'}
+    fetch('/Guest/list', {method: 'get'}
     ).then(response => response.json()
-    ).then(room => {
-        for (let guest of guest) {
+    ).then(Guest => {
+        for (let guest of Guest) {
 
             guestHTML += `<tr>` +
                 `<td>${guest.id}</td>` +
@@ -28,7 +28,8 @@ function pageLoad() {
                 `</tr>`;
 
         }
-    }
+    })
+
     guestHTML += '</table>';
 
     document.getElementById("listDiv").innerHTML = guestHTML;
@@ -42,12 +43,10 @@ function pageLoad() {
     for (let button of deleteButtons) {
         button.addEventListener("click", deleteGuest);
     }
-
-};
-
-document.getElementById("saveButton").addEventListener("click", saveUpdateFruit);
-document.getElementById("cancelButton").addEventListener("click", cancelUpdateFruit);
 }
+
+document.getElementById("saveButton").addEventListener("click", saveUpdateGuest);
+document.getElementById("cancelButton").addEventListener("click", cancelUpdateGuest);
 
 function updateGuest(event) {
 
@@ -67,7 +66,7 @@ function updateGuest(event) {
         document.getElementById("editDiv").style.display = 'block';
 
     } else {
-        fetch('/guest/get/' + id, {method: 'get'}
+        fetch('/Guest/get/' + id, {method: 'get'}
         ).then(response => response.json()
         ).then(guest => {
 
@@ -108,7 +107,7 @@ function deleteGuest(event) {
             document.getElementById("editDiv").style.display = 'block';
 
         } else {
-            fetch('/guest/get/' + id, {method: 'get'}
+            fetch('/Guest/list/' + id, {method: 'get'}
             ).then(response => response.json()
             ).then(guest => {
 
@@ -178,4 +177,37 @@ function saveEditGuest(event) {
             pageLoad();
         }
     });
+}
+
+function cancelEditGuest(event) {
+
+    event.preventDefault();
+
+    document.getElementById("listDiv").style.display = 'block';
+    document.getElementById("editDiv").style.display = 'none';
+
+}
+
+function deleteGuest(event) {
+
+    const ok = confirm("Are you sure?");
+
+    if (ok === true) {
+
+        let id = event.target.getAttribute("data-id");
+        let formData = new FormData();
+        formData.append("id", id);
+
+        fetch('/Guest/delete', {method: 'post', body: formData}
+        ).then(response => response.json()
+        ).then(responseData => {
+
+                if (responseData.hasOwnProperty('error')) {
+                    alert(responseData.error);
+                } else {
+                    pageLoad();
+                }
+            }
+        );
+    }
 }
