@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Demo page</title>
+    <link rel="stylesheet" type="text/css" href="/client/css/styles.css">
+    <script src="/client/js/guest.js"></script>
+    <link rel="shortcut icon" href="/client/favicon.ico" type="image/x-icon">
+</head>
+
+<body onload="pageLoad()">
+<div id="content">
+
+    <div id="pageHeader">
+        <h1>All the CRUD ops demoed with guest!</h1>
+        <div class="floatRight"><button id="newButton" class="editButton">Add New guest</button></div>
+    </div>
+
+    <div id="listDiv"></div>
+
+    <div id="editDiv">
+        <h2 id="editHeading"></h2>
+        <form id="guestForm">
+            <div>
+                <label for="GuestID" class="label">ID:</label>
+                <input type="text" name="ID" id="GuestID">
+            </div>
+            <div>
+                <label for="GuestName" class="Name">Name:</label>
+                <input type="text" name="Name" id="GuestName">
+            </div>
+            <div>
+                <label for="GuestArrive" class="label">Arrive:</label>
+                <input type="text" name="Guest Arrive Date" id="GuestArrive">
+            </div>
+            <div>
+                <label for="GuestLeave" class="label">Leave:</label>
+                <input type="text" name="Guest Leave Date" id="GuestLeave">
+            </div>
+            <div>
+                <label for="VIP" class="label">VIP:</label>
+                <input type="text" name="VIP" id="VIP">
+            </div>
+            <div>
+                <input type="submit" value="Save" id="saveButton">
+                <input type="submit" value="Cancel" id="cancelButton">
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
