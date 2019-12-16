@@ -17,18 +17,17 @@ public class Guest {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public String insertGuest(
-            @FormDataParam("GuestID") Integer GuestID, @FormDataParam("GuestName") String GuestName, @FormDataParam("GuestArrive") String GuestArrive, @FormDataParam("GuestLeave") String GuestLeave, @FormDataParam("VIP") Boolean VIP) {
+            @FormDataParam("GuestName") String GuestName, @FormDataParam("GuestArrive") String GuestArrive, @FormDataParam("GuestLeave") String GuestLeave, @FormDataParam("VIP") Boolean VIP) {
         try {
-            if (GuestID == null || GuestName == null || GuestArrive == null || GuestLeave == null || VIP == null) {
+            if (GuestName == null || GuestArrive == null || GuestLeave == null || VIP == null) {
                 throw new Exception("One or more form data parameters are missing in the HTTP request.");
             }
-            System.out.println("Guest/new GuestID=" + GuestID);
-            PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Guest (GuestID, GuestName, GuestArrive, GuestLeave, VIP) VALUES (?, ?, ?, ?, ?)");
-            ps.setInt(1, GuestID);
-            ps.setString(2, GuestName);
-            ps.setString(3, GuestArrive);
-            ps.setString(4, GuestLeave);
-            ps.setBoolean(5, VIP);
+            System.out.println("Guest/new GuestID=");
+            PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Guest (GuestName, GuestArrive, GuestLeave, VIP) VALUES (?, ?, ?, ?)");
+            ps.setString(1, GuestName);
+            ps.setString(2, GuestArrive);
+            ps.setString(3, GuestLeave);
+            ps.setBoolean(4, VIP);
             ps.execute();
             return "{\"status\": \"OK\"}";
 

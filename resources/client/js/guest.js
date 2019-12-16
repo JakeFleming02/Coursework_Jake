@@ -1,8 +1,46 @@
 function pageLoad() {
+
+    let GuestHTML = `<table>` +
+    '<tr>' +
+    '<th>GuestID</th>' +
+    '<th>GuestName</th>' +
+    '<th>GuestArrive</th>' +
+    '<th>GuestLeave</th>' +
+    '<th>VIP</th>' +
+    '<th class="last">Options</th>' +
+    '</tr>';
+
+    fetch('/Guest/list', {method: 'get'}
+    ).then(response => response.json()
+    ).then(Guest => {
+
+        for (let guest of Guest) {
+
+            GuestHTML += `<tr>` +
+                `<td>${guest.GuestID}</td>` +
+                `<td>${guest.GuestName}</td>` +
+                `<td>${guest.GuestArrive}</td>` +
+                `<td>${guest.GuestLeave}</td>` +
+                `<td>${guest.VIP}</td>` +
+                `<td class="last">` +
+                `<td><button class="editButton" data-id=${guest.GuestID}>Edit</button></td>` +
+                `</tr>`;
+        }
+
+        GuestHTML += '</table>';
+
+        document.getElementById("listDiv").innerHTML = GuestHTML;
+
+        let editButtons = document.getElementsByClassName("editButton");
+        for (let button of editButtons) {
+            button.addEventListener("click", editGuest);
+        }
+
+    });
     document.getElementById("IndexButton").addEventListener("click", indexRedirect);
 
-document.getElementById("saveButton").addEventListener("click", saveEditGuest);
-document.getElementById("cancelButton").addEventListener("click", cancelEditGuest);
+    document.getElementById("saveButton").addEventListener("click", saveEditGuest);
+    document.getElementById("cancelButton").addEventListener("click", cancelEditGuest);
 
     function editGuest(event) {
 
@@ -23,7 +61,7 @@ document.getElementById("cancelButton").addEventListener("click", cancelEditGues
 
         } else {
 
-            fetch('/Guest/get/' + id, {method: 'get'}
+            fetch('/Guest/list/' + id, {method: 'get'}
             ).then(response => response.json()
             ).then(guest => {
 
@@ -33,7 +71,7 @@ document.getElementById("cancelButton").addEventListener("click", cancelEditGues
 
                     document.getElementById("editHeading").innerHTML = 'Editing ' + guest.GuestName + ':';
 
-                    document.getElementById("GuestID").value = id;
+                    document.getElementById("GuestID").value = guest.GuestID;
                     document.getElementById("GuestName").value = guest.GuestName;
                     document.getElementById("GuestArrive").value = guest.GuestArrive;
                     document.getElementById("GuestLeave").value = guest.GuestLeave;
@@ -107,37 +145,7 @@ function cancelEditGuest(event) {
 
 }
 
-let GuestHTML = `<table>` +
-    '<tr>' +
-    '<th>GuestID</th>' +
-    '<th>GuestName</th>' +
-    '<th>GuestArrive</th>' +
-    '<th>GuestLeave</th>' +
-    '<th>VIP</th>' +
-    '<th>Options</th>' +
-    '</tr>';
 
-fetch('/Guest/list', {method: 'get'}
-).then(response => response.json()
-).then(Guest => {
-
-    for (let guest of Guest) {
-
-        GuestHTML += `<tr>` +
-            `<td>${guest.GuestID}</td>` +
-            `<td>${guest.GuestName}</td>` +
-            `<td>${guest.GuestArrive}</td>` +
-            `<td>${guest.GuestLeave}</td>` +
-            `<td>${guest.VIP}</td>` +
-            `<td><button class="editButton" data-id=${guest.GuestID}>Edit</button></td>` +
-            `</tr>`;
-    }
-
-    GuestHTML += '</table>';
-
-    document.getElementById("listDiv").innerHTML = GuestHTML;
-
-});
 
 function indexRedirect(){
     window.location.href="/client/index.html"
