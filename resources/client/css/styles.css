@@ -9,7 +9,41 @@ h1 {
 }
 
 #content {
-    background-color: white;
+    background-color: #a6ddff;
+    width: 1920px;
+    margin: 0 auto;
+    min-height: 1080px;
+    padding: 32px;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+table {
+    width: 85%;
+}
+
+th {
+    height: 50px;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+}
+
+th {
+    background-color: #A6C1FF;
+    color: #000000;
+}
+
+#RoomContent {
+    background-color: #a6ddff;
     width: 1920px;
     margin: 0 auto;
     min-height: 1080px;

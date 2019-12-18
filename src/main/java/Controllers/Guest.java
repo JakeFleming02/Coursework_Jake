@@ -66,6 +66,36 @@ public class Guest {
     }
 
 
+    @GET
+    @Path("get/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getGuest(@PathParam("id") Integer id) {
+        System.out.println("Guest/get/" + id);
+
+        try {
+            PreparedStatement ps = Main.db.prepareStatement("SELECT GuestID, GuestName, GuestArrive, GuestLeave, VIP FROM Guest WHERE GuestID = ?");
+            ps.setInt(1, id);
+
+            ResultSet results = ps.executeQuery();
+            if (results.next()) {
+                JSONObject item = new JSONObject();
+                item.put("GuestID", results.getInt(1));
+                item.put("GuestName", results.getString(2));
+                item.put("GuestArrive", results.getString(3));
+                item.put("GuestLeave", results.getString(4));
+                item.put("VIP", results.getBoolean(5));
+                return item.toString();
+            } else {
+                return "{\"error\": \"Unable to get guest with id " + id + ", please see server console for more info.\"}";
+            }
+
+        } catch (Exception exception) {
+            System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to get guest for some reason, please see server console for more info.\"}";
+        }
+
+    }
+
     @POST
     @Path("update")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -116,27 +146,4 @@ public class Guest {
         }
     }
 
-    @GET
-    @Path("get/{GuestID}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String getGuest(@PathParam("GuestID") Integer GuestID) throws Exception {
-        if (GuestID == null) {
-            throw new Exception("Guest's 'GuestID' is missing in the HTTP request's URL.");
-        }
-        System.out.println("Guest/get/" + GuestID);
-        JSONObject item = new JSONObject();
-        try {
-            PreparedStatement ps = Main.db.prepareStatement("SELECT GuestName FROM Guest WHERE GuestID = ?");
-            ps.setInt(1, GuestID);
-            ResultSet results = ps.executeQuery();
-            if (results.next()) {
-                item.put("GuestID", GuestID);
-                item.put("GuestName", results.getString(1));
-            }
-            return item.toString();
-        } catch (Exception exception) {
-            System.out.println("Database error: " + exception.getMessage());
-            return "{\"error\": \"Unable to get item, please see server console for more info.\"}";
-        }
-    }
 }

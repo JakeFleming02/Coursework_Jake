@@ -1,14 +1,14 @@
 function pageLoad() {
 
     let GuestHTML = `<table>` +
-    '<tr>' +
-    '<th>GuestID</th>' +
-    '<th>GuestName</th>' +
-    '<th>GuestArrive</th>' +
-    '<th>GuestLeave</th>' +
-    '<th>VIP</th>' +
-    '<th class="last">Options</th>' +
-    '</tr>';
+        '<tr>' +
+        '<th>GuestID</th>' +
+        '<th>GuestName</th>' +
+        '<th>GuestArrive</th>' +
+        '<th>GuestLeave</th>' +
+        '<th>VIP</th>' +
+        '<th class="last">Options</th>' +
+        '</tr>';
 
     fetch('/Guest/list', {method: 'get'}
     ).then(response => response.json()
@@ -17,13 +17,13 @@ function pageLoad() {
         for (let guest of Guest) {
 
             GuestHTML += `<tr>` +
-                `<td>${guest.GuestID}</td>` +
-                `<td>${guest.GuestName}</td>` +
-                `<td>${guest.GuestArrive}</td>` +
-                `<td>${guest.GuestLeave}</td>` +
-                `<td>${guest.VIP}</td>` +
-                `<td class="last">` +
-                `<td><button class="editButton" data-id=${guest.GuestID}>Edit</button></td>` +
+                `<th>${guest.GuestID}</th>` +
+                `<th>${guest.GuestName}</th>` +
+                `<th>${guest.GuestArrive}</th>` +
+                `<th>${guest.GuestLeave}</th>` +
+                `<th>${guest.VIP}</th>` +
+                `<th><button class="editButton" data-id=${guest.GuestID}>Edit</button></th>` +
+                `<th><button class='deleteButton' data-id='${guest.GuestID}'>Delete</button></th>` +
                 `</tr>`;
         }
 
@@ -36,57 +36,60 @@ function pageLoad() {
             button.addEventListener("click", editGuest);
         }
 
+        let deleteButtons = document.getElementsByClassName("deleteButton");
+        for (let button of deleteButtons) {
+            button.addEventListener("click", deleteGuest);
+        }
+
     });
     document.getElementById("IndexButton").addEventListener("click", indexRedirect);
 
     document.getElementById("saveButton").addEventListener("click", saveEditGuest);
-    document.getElementById("cancelButton").addEventListener("click", cancelEditGuest);
+    document.getElementById("cancelButton").addEventListener("click", clearEditGuest);
 
-    function editGuest(event) {
+    document.getElementById("editHeading").innerHTML = 'Add new guest:';
 
-        const id = event.target.getAttribute("data-id");
+}
 
-        if (id === null) {
+function editGuest(event) {
 
-            document.getElementById("editHeading").innerHTML = 'Add new guest:';
+    const id = event.target.getAttribute("data-id");
 
-            document.getElementById("GuestID").value = '';
-            document.getElementById("GuestName").value = '';
-            document.getElementById("GuestArrive").value = '';
-            document.getElementById("GuestLeave").value = '';
-            document.getElementById("VIP").value = '';
+    if (id === null) {
 
-            document.getElementById("listDiv").style.display = 'none';
-            document.getElementById("editDiv").style.display = 'block';
+        document.getElementById("editHeading").innerHTML = 'Add new guest:';
 
-        } else {
+        document.getElementById("GuestID").value = '';
+        document.getElementById("GuestName").value = '';
+        document.getElementById("GuestArrive").value = '';
+        document.getElementById("GuestLeave").value = '';
+        document.getElementById("VIP").value = '';
 
-            fetch('/Guest/list/' + id, {method: 'get'}
-            ).then(response => response.json()
-            ).then(guest => {
+    } else {
 
-                if (guest.hasOwnProperty('error')) {
-                    alert(guest.error);
-                } else {
+        fetch('/Guest/get/' + id, {method: 'get'}
+        ).then(response => response.json()
+        ).then(guest => {
 
-                    document.getElementById("editHeading").innerHTML = 'Editing ' + guest.GuestName + ':';
+            if (guest.hasOwnProperty('error')) {
+                alert(guest.error);
+            } else {
 
-                    document.getElementById("GuestID").value = guest.GuestID;
-                    document.getElementById("GuestName").value = guest.GuestName;
-                    document.getElementById("GuestArrive").value = guest.GuestArrive;
-                    document.getElementById("GuestLeave").value = guest.GuestLeave;
-                    document.getElementById("VIP").value = guest.VIP;
+                document.getElementById("editHeading").innerHTML = 'Editing ' + guest.GuestName + ':';
 
-                    document.getElementById("listDiv").style.display = 'none';
-                    document.getElementById("editDiv").style.display = 'block';
+                document.getElementById("GuestID").value = guest.GuestID;
+                document.getElementById("GuestName").value = guest.GuestName;
+                document.getElementById("GuestArrive").value = guest.GuestArrive;
+                document.getElementById("GuestLeave").value = guest.GuestLeave;
+                document.getElementById("VIP").value = guest.VIP;
 
-                }
+            }
 
-            });
-
-        }
+        });
 
     }
+
+}
 
 function saveEditGuest(event) {
 
@@ -129,24 +132,52 @@ function saveEditGuest(event) {
         if (responseData.hasOwnProperty('error')) {
             alert(responseData.error);
         } else {
-            document.getElementById("listDiv").style.display = 'block';
-            document.getElementById("editDiv").style.display = 'none';
             pageLoad();
+            clearEditGuest();
         }
     });
 }
 
-function cancelEditGuest(event) {
+function clearEditGuest(event) {
 
-    event.preventDefault();
+    document.getElementById("GuestID").value = '';
+    document.getElementById("GuestName").value = '';
+    document.getElementById("GuestArrive").value = '';
+    document.getElementById("GuestLeave").value = '';
+    document.getElementById("VIP").value = '';
 
-    document.getElementById("listDiv").style.display = 'block';
-    document.getElementById("editDiv").style.display = 'none';
+    document.getElementById("editHeading").innerHTML = 'Add new guest:';
+
+    if (event !== undefined && event !== null) {
+        event.preventDefault();
+    }
 
 }
 
+function deleteGuest(event) {
 
+    const ok = confirm("Are you sure?");
+
+    if (ok === true) {
+
+        let id = event.target.getAttribute("data-id");
+        let formData = new FormData();
+        formData.append("GuestID", id);
+
+        fetch('/Guest/delete', {method: 'post', body: formData}
+        ).then(response => response.json()
+        ).then(responseData => {
+
+                if (responseData.hasOwnProperty('error')) {
+                    alert(responseData.error);
+                } else {
+                    pageLoad();
+                }
+            }
+        );
+    }
+}
 
 function indexRedirect(){
     window.location.href="/client/index.html"
-}}
+}
