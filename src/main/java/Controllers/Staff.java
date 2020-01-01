@@ -60,6 +60,33 @@ public class Staff {
 
     }
 
+    @GET
+    @Path("get/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getStaff(@PathParam("id") Integer id) {
+        System.out.println("Staff/get/" + id);
+
+        try {
+            PreparedStatement ps = Main.db.prepareStatement("SELECT StaffID, StaffName FROM Staff WHERE StaffID = ?");
+            ps.setInt(1, id);
+
+            ResultSet results = ps.executeQuery();
+            if (results.next()) {
+                JSONObject item = new JSONObject();
+                item.put("StaffID", results.getInt(1));
+                item.put("StaffName", results.getString(2));
+                return item.toString();
+            } else {
+                return "{\"error\": \"Unable to get staff with id " + id + ", please see server console for more info.\"}";
+            }
+
+        } catch (Exception exception) {
+            System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to get guest for some reason, please see server console for more info.\"}";
+        }
+
+    }
+
 
     @POST
     @Path("update")
@@ -105,30 +132,6 @@ public class Staff {
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
             return "{\"error\": \"Unable to delete item, please see server console for more info.\"}";
-        }
-    }
-
-    @GET
-    @Path("get/{StaffID}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String getStaff(@PathParam("StaffID") Integer StaffID) throws Exception {
-        if (StaffID == null) {
-            throw new Exception("Staff's 'StaffID' is missing in the HTTP request's URL.");
-        }
-        System.out.println("Staff/get/" + StaffID);
-        JSONObject item = new JSONObject();
-        try {
-            PreparedStatement ps = Main.db.prepareStatement("SELECT StaffName FROM Staff WHERE StaffID = ?");
-            ps.setInt(1, StaffID);
-            ResultSet results = ps.executeQuery();
-            if (results.next()) {
-                item.put("StaffID", StaffID);
-                item.put("StaffName", results.getString(1));
-            }
-            return item.toString();
-        } catch (Exception exception) {
-            System.out.println("Database error: " + exception.getMessage());
-            return "{\"error\": \"Unable to get item, please see server console for more info.\"}";
         }
     }
 }

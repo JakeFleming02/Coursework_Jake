@@ -68,6 +68,37 @@ public class Room {
 
     }
 
+    @GET
+    @Path("get/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getRoom(@PathParam("id") Integer id) {
+        System.out.println("Room/get/" + id);
+
+        try {
+            PreparedStatement ps = Main.db.prepareStatement("SELECT RoomID, RoomName, RoomLocation, Cleaned, Checked, OutOfOrder FROM Room WHERE RoomID = ?");
+            ps.setInt(1, id);
+
+            ResultSet results = ps.executeQuery();
+            if (results.next()) {
+                JSONObject item = new JSONObject();
+                item.put("RoomID", results.getInt(1));
+                item.put("RoomName", results.getString(2));
+                item.put("RoomLocation", results.getString(3));
+                item.put("Cleaned", results.getString(4));
+                item.put("Checked", results.getBoolean(5));
+                item.put("OutOfOrder", results.getBoolean(6));
+                return item.toString();
+            } else {
+                return "{\"error\": \"Unable to get room with id " + id + ", please see server console for more info.\"}";
+            }
+
+        } catch (Exception exception) {
+            System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to get guest for some reason, please see server console for more info.\"}";
+        }
+
+    }
+
 
     @POST
     @Path("update")
@@ -117,30 +148,6 @@ public class Room {
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
             return "{\"error\": \"Unable to delete item, please see server console for more info.\"}";
-        }
-    }
-
-    @GET
-    @Path("get/{RoomID}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String getRoom(@PathParam("RoomID") Integer RoomID) throws Exception {
-        if (RoomID == null) {
-            throw new Exception("Room's 'RoomID' is missing in the HTTP request's URL.");
-        }
-        System.out.println("Room/get/" + RoomID);
-        JSONObject item = new JSONObject();
-        try {
-            PreparedStatement ps = Main.db.prepareStatement("SELECT RoomName FROM Room WHERE RoomID = ?");
-            ps.setInt(1, RoomID);
-            ResultSet results = ps.executeQuery();
-            if (results.next()) {
-                item.put("RoomID", RoomID);
-                item.put("RoomName", results.getString(1));
-            }
-            return item.toString();
-        } catch (Exception exception) {
-            System.out.println("Database error: " + exception.getMessage());
-            return "{\"error\": \"Unable to get item, please see server console for more info.\"}";
         }
     }
 }

@@ -42,7 +42,12 @@ function pageLoad() {
         }
 
     });
+
+
     document.getElementById("IndexButton").addEventListener("click", indexRedirect);
+    document.getElementById("StaffButton").addEventListener("click", staffRedirect);
+    document.getElementById("ReservationButton").addEventListener("click", reservationRedirect);
+    document.getElementById("FeaturesButton").addEventListener("click", featuresRedirect);
 
     document.getElementById("saveButton").addEventListener("click", saveEditGuest);
     document.getElementById("cancelButton").addEventListener("click", clearEditGuest);
@@ -180,4 +185,13 @@ function deleteGuest(event) {
 
 function indexRedirect(){
     window.location.href="/client/index.html"
+}
+function staffRedirect(){
+    window.location.href="/client/staff.html"
+}
+function reservationRedirect(){
+    window.location.href="/client/reservation.html"
+}
+function featuresRedirect(){
+    window.location.href="/client/features.html"
 }

@@ -2,9 +2,9 @@
 <html>
 
 <head>
-    <title>Guest Page</title>
+    <title>Reservation Page</title>
     <link rel="stylesheet" type="text/css" href="/client/css/styles.css">
-    <script src="/client/js/guest.js"></script>
+    <script src="/client/js/reservation.js"></script>
     <link rel="shortcut icon" href="/client/favicon.ico" type="image/x-icon">
 </head>
 
@@ -14,8 +14,8 @@
 
 
     <div id="pageHeader">
-        <h1>Guest Page</h1>
-        <!-- <div class="floatRight"><button id="newButton" class="editButton">Add New guest</button></div> > -->
+        <h1>Reservation Page</h1>
+        <!-- <div class="floatRight"><button id="newButton" class="editButton">Add New reservation</button></div> > -->
     </div>
     <input type="button" id="IndexButton">
     <label for="IndexButton" class="label">Index</label>
@@ -23,8 +23,8 @@
     <input type="button" id="StaffButton">
     <label for="StaffButton" class="label">Staff</label>
 
-    <input type="button" id="ReservationButton">
-    <label for="ReservationButton" class="label">Reservation</label>
+    <input type="button" id="GuestButton">
+    <label for="GuestButton" class="label">Guest</label>
 
     <input type="button" id="FeaturesButton">
     <label for="FeaturesButton" class="label">Features</label>
@@ -33,23 +33,19 @@
 
     <div id="editDiv">
         <h2 id="editHeading"></h2>
-        <form id="GuestForm">
-                <input type="hidden" name="GuestID" id="GuestID">
+        <form id="ReservationForm">
+            <input type="hidden" name="ReservationID" id="ReservationID">
             <div>
-                <label for="GuestName" class="label">Name:</label>
-                <input type="text" name="GuestName" id="GuestName">
+                <label for="GuestID" class="label">Guest ID:</label>
+                <input type="text" name="GuestID" id="GuestID">
             </div>
             <div>
-                <label for="GuestArrive" class="label">Arrive:</label>
-                <input type="text" name="GuestArrive" id="GuestArrive">
+                <label for="RoomID" class="label">Room ID:</label>
+                <input type="text" name="RoomID" id="RoomID">
             </div>
             <div>
-                <label for="GuestLeave" class="label">Leave:</label>
-                <input type="text" name="GuestLeave" id="GuestLeave">
-            </div>
-            <div>
-                <label for="VIP" class="label">VIP:</label>
-                <input type="text" name="VIP" id="VIP">
+                <label for="StaffID" class="label">Staff ID:</label>
+                <input type="text" name="StaffID" id="StaffID">
             </div>
             <div>
                 <input type="submit" value="Save" id="saveButton">

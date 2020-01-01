@@ -11,8 +11,49 @@
         <h1>Room Page</h1>
     </div>
     <input type="button" id="GuestButton">
-    <label for="GuestButton">Guest</label>
+    <label for="GuestButton" class="label">Guest</label>
+
+    <input type="button" id="StaffButton">
+    <label for="StaffButton" class="label">Staff</label>
+
+    <input type="button" id="ReservationButton">
+    <label for="ReservationButton" class="label">Reservation</label>
+
+    <input type="button" id="FeaturesButton">
+    <label for="FeaturesButton" class="label">Features</label>
+
     <div id="listDiv"></div>
+
+    <div id="editDiv">
+        <h2 id="editHeading"></h2>
+        <form id="RoomForm">
+            <input type="hidden" name="RoomID" id="RoomID">
+            <div>
+                <label for="RoomName" class="label">Name:</label>
+                <input type="text" name="RoomName" id="RoomName">
+            </div>
+            <div>
+                <label for="RoomLocation" class="label">Location:</label>
+                <input type="text" name="RoomLocation" id="RoomLocation">
+            </div>
+            <div>
+                <label for="Cleaned" class="label">Cleaned:</label>
+                <input type="text" name="Cleaned" id="Cleaned">
+            </div>
+            <div>
+                <label for="Checked" class="label">Checked:</label>
+                <input type="text" name="Checked" id="Checked">
+            </div>
+            <div>
+                <label for="OutOfOrder" class="label">OutOfOrder:</label>
+                <input type="text" name="OutOfOrder" id="OutOfOrder">
+            </div>
+            <div>
+                <input type="submit" value="Save" id="saveButton">
+                <input type="submit" value="Cancel" id="cancelButton">
+            </div>
+        </form>
+    </div>
 </div>
 </body>
 </html>

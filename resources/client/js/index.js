@@ -1,5 +1,8 @@
 function pageLoad() {
-    document.getElementById("RoomButton").addEventListener("click", roomRedirect);
+    document.getElementById("GuestButton").addEventListener("click", guestRedirect);
+    document.getElementById("StaffButton").addEventListener("click", staffRedirect);
+    document.getElementById("ReservationButton").addEventListener("click", reservationRedirect);
+    document.getElementById("FeaturesButton").addEventListener("click", featuresRedirect);
 
     let RoomHTML = `<table>` +
         '<tr>' +
@@ -106,22 +109,22 @@ function saveEditRoom(event) {
     }
 
     if (document.getElementById("RoomLocation").value.trim() === '') {
-        alert("Please provide the rooms date of arrival.");
+        alert("Please provide the room location.");
         return;
     }
 
     if (document.getElementById("Cleaned").value.trim() === '') {
-        alert("Please provide the rooms date of departure.");
+        alert("Please provide whether the room has been cleaned or not.");
         return;
     }
 
     if (document.getElementById("Checked").value.trim() === '') {
-        alert("Please provide whether a room is a VIP or not.");
+        alert("Please provide whether the room has been cleaned or not.");
         return;
     }
 
     if (document.getElementById("OutOfOrder").value.trim() === '') {
-        alert("Please provide whether a room is a VIP or not.");
+        alert("Please provide whether the room has been cleaned or not.");
         return;
     }
 
@@ -189,6 +192,15 @@ function deleteRoom(event) {
         );
     }
 }
-function roomRedirect(){
-    window.location.href="/client/room.html"
+function guestRedirect(){
+    window.location.href="/client/guest.html"
+}
+function staffRedirect(){
+    window.location.href="/client/staff.html"
+}
+function reservationRedirect(){
+    window.location.href="/client/reservation.html"
+}
+function featuresRedirect(){
+    window.location.href="/client/features.html"
 }

@@ -17,7 +17,7 @@ public class Reservation {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public String insertReservation(
-            @FormDataParam("ReservationID") Integer ReservationID, @FormDataParam("GuestID") Integer GuestID, @FormDataParam("RoomID") Integer RoomID, @FormDataParam("StaffID") Integer StaffID){
+            @FormDataParam("ReservationID") Integer ReservationID, @FormDataParam("GuestID") Integer GuestID, @FormDataParam("RoomID") Integer RoomID, @FormDataParam("StaffID") Integer StaffID) {
         try {
             if (ReservationID == null || GuestID == null || RoomID == null || StaffID == null) {
                 throw new Exception("One or more form data parameters are missing in the HTTP request.");
@@ -64,13 +64,42 @@ public class Reservation {
 
     }
 
+    @GET
+    @Path("get/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getReservation(@PathParam("id") Integer id) {
+        System.out.println("Reservation/get/" + id);
+
+        try {
+            PreparedStatement ps = Main.db.prepareStatement("SELECT ReservationID, GuestID, RoomID, StaffID FROM Reservation WHERE ReservationID = ?");
+            ps.setInt(1, id);
+
+            ResultSet results = ps.executeQuery();
+            if (results.next()) {
+                JSONObject item = new JSONObject();
+                item.put("ReservationID", results.getInt(1));
+                item.put("GuestID", results.getString(2));
+                item.put("RoomID", results.getString(3));
+                item.put("StaffID", results.getString(4));
+                return item.toString();
+            } else {
+                return "{\"error\": \"Unable to get reservation with id " + id + ", please see server console for more info.\"}";
+            }
+
+        } catch (Exception exception) {
+            System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to get guest for some reason, please see server console for more info.\"}";
+        }
+
+    }
+
 
     @POST
     @Path("update")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public String updateReservation(
-            @FormDataParam("ReservationID") Integer ReservationID, @FormDataParam("GuestID") Integer GuestID, @FormDataParam("RoomID") Integer RoomID, @FormDataParam("StaffID") Integer StaffID){
+            @FormDataParam("ReservationID") Integer ReservationID, @FormDataParam("GuestID") Integer GuestID, @FormDataParam("RoomID") Integer RoomID, @FormDataParam("StaffID") Integer StaffID) {
         try {
             if (ReservationID == null || GuestID == null || RoomID == null || StaffID == null) {
                 throw new Exception("One or more form data parameters are missing in the HTTP request.");
@@ -111,30 +140,6 @@ public class Reservation {
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
             return "{\"error\": \"Unable to delete item, please see server console for more info.\"}";
-        }
-    }
-
-    @GET
-    @Path("get/{ReservationID}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String getReservation(@PathParam("ReservationID") Integer ReservationID) throws Exception {
-        if (ReservationID == null) {
-            throw new Exception("Reservation's 'ReservationID' is missing in the HTTP request's URL.");
-        }
-        System.out.println("Reservation/get/" + ReservationID);
-        JSONObject item = new JSONObject();
-        try {
-            PreparedStatement ps = Main.db.prepareStatement("SELECT GuestID FROM Reservation WHERE ReservationID = ?");
-            ps.setInt(1, ReservationID);
-            ResultSet results = ps.executeQuery();
-            if (results.next()) {
-                item.put("ReservationID", ReservationID);
-                item.put("GuestID", results.getString(1));
-            }
-            return item.toString();
-        } catch (Exception exception) {
-            System.out.println("Database error: " + exception.getMessage());
-            return "{\"error\": \"Unable to get item, please see server console for more info.\"}";
         }
     }
 }
