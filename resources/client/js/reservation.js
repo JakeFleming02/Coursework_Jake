@@ -2,7 +2,6 @@ function pageLoad() {
 
     let ReservationHTML = `<table>` +
         '<tr>' +
-        '<th>ReservationID</th>' +
         '<th>GuestID</th>' +
         '<th>RoomID</th>' +
         '<th>StaffID</th>' +
@@ -16,12 +15,11 @@ function pageLoad() {
         for (let reservation of Reservation) {
 
             ReservationHTML += `<tr>` +
-                `<th>${reservation.ReservationID}</th>` +
                 `<th>${reservation.GuestID}</th>` +
                 `<th>${reservation.RoomID}</th>` +
                 `<th>${reservation.StaffID}</th>` +
-                `<th><button class="editButton" data-id=${reservation.ReservationID}>Edit</button></th>` +
-                `<th><button class='deleteButton' data-id='${reservation.ReservationID}'>Delete</button></th>` +
+                `<th><button class="editButton" data-id=${reservation.GuestID}>Edit</button></th>` +
+                `<th><button class='deleteButton' data-id='${reservation.GuestID}'>Delete</button></th>` +
                 `</tr>`;
         }
 
@@ -41,12 +39,6 @@ function pageLoad() {
 
     });
 
-
-    document.getElementById("IndexButton").addEventListener("click", indexRedirect);
-    document.getElementById("StaffButton").addEventListener("click", staffRedirect);
-    document.getElementById("GuestButton").addEventListener("click", guestRedirect);
-    document.getElementById("FeaturesButton").addEventListener("click", featuresRedirect);
-
     document.getElementById("saveButton").addEventListener("click", saveEditReservation);
     document.getElementById("cancelButton").addEventListener("click", clearEditReservation);
 
@@ -62,7 +54,6 @@ function editReservation(event) {
 
         document.getElementById("editHeading").innerHTML = 'Add new reservation:';
 
-        document.getElementById("ReservationID").value = '';
         document.getElementById("GuestID").value = '';
         document.getElementById("RoomID").value = '';
         document.getElementById("StaffID").value = '';
@@ -79,7 +70,6 @@ function editReservation(event) {
 
                 document.getElementById("editHeading").innerHTML = 'Editing ' + reservation.GuestID + ':';
 
-                document.getElementById("ReservationID").value = reservation.ReservationID;
                 document.getElementById("GuestID").value = reservation.GuestID;
                 document.getElementById("RoomID").value = reservation.RoomID;
                 document.getElementById("StaffID").value = reservation.StaffID;
@@ -110,7 +100,7 @@ function saveEditReservation(event) {
         alert("Please provide the staff ID.");
         return;
     }
-    const id = document.getElementById("ReservationID").value;
+    const id = document.getElementById("GuestID").value;
     const form = document.getElementById("ReservationForm");
     const formData = new FormData(form);
 
@@ -136,7 +126,6 @@ function saveEditReservation(event) {
 
 function clearEditReservation(event) {
 
-    document.getElementById("ReservationID").value = '';
     document.getElementById("GuestID").value = '';
     document.getElementById("RoomID").value = '';
     document.getElementById("StaffID").value = '';
@@ -157,7 +146,7 @@ function deleteReservation(event) {
 
         let id = event.target.getAttribute("data-id");
         let formData = new FormData();
-        formData.append("ReservationID", id);
+        formData.append("GuestID", id);
 
         fetch('/ReservationReservation/delete', {method: 'post', body: formData}
         ).then(response => response.json()
@@ -171,17 +160,4 @@ function deleteReservation(event) {
             }
         );
     }
-}
-
-function indexRedirect(){
-    window.location.href="/client/index.html"
-}
-function staffRedirect(){
-    window.location.href="/client/staff.html"
-}
-function guestRedirect(){
-    window.location.href="/client/guest.html"
-}
-function featuresRedirect(){
-    window.location.href="/client/features.html"
 }

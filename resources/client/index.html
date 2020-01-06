@@ -6,21 +6,17 @@
 </head>
 
 <body onload="pageLoad()">
-<div id="RoomContent">
+<div id="content">
     <div id="pageHeader">
         <h1>Room Page</h1>
     </div>
-    <input type="button" id="GuestButton">
-    <label for="GuestButton" class="label">Guest</label>
 
-    <input type="button" id="StaffButton">
-    <label for="StaffButton" class="label">Staff</label>
+    <a href="guest.html" class="myButton">Guest</a>
+    <a href="staff.html" class="myButton">Staff</a>
+    <a href="reservation.html" class="myButton">Reservations</a>
+    <a href="features.html" class="myButton">Features</a>
 
-    <input type="button" id="ReservationButton">
-    <label for="ReservationButton" class="label">Reservation</label>
-
-    <input type="button" id="FeaturesButton">
-    <label for="FeaturesButton" class="label">Features</label>
+    <p></p>
 
     <div id="listDiv"></div>
 
@@ -48,9 +44,10 @@
                 <label for="OutOfOrder" class="label">OutOfOrder:</label>
                 <input type="text" name="OutOfOrder" id="OutOfOrder">
             </div>
+            <br>
             <div>
-                <input type="submit" value="Save" id="saveButton">
-                <input type="submit" value="Cancel" id="cancelButton">
+                <input type="submit" value="Save" class="myButton" id="saveButton">
+                <input type="submit" value="Cancel" class="myButton" id="cancelButton">
             </div>
         </form>
     </div>

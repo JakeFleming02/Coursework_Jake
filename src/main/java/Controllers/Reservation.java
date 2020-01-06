@@ -16,18 +16,16 @@ public class Reservation {
     @Path("new")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public String insertReservation(
-            @FormDataParam("ReservationID") Integer ReservationID, @FormDataParam("GuestID") Integer GuestID, @FormDataParam("RoomID") Integer RoomID, @FormDataParam("StaffID") Integer StaffID) {
+    public String insertReservation(@FormDataParam("GuestID") Integer GuestID, @FormDataParam("RoomID") Integer RoomID, @FormDataParam("StaffID") Integer StaffID) {
         try {
-            if (ReservationID == null || GuestID == null || RoomID == null || StaffID == null) {
+            if (GuestID == null || RoomID == null || StaffID == null) {
                 throw new Exception("One or more form data parameters are missing in the HTTP request.");
             }
-            System.out.println("Reservation/new ReservationID=" + ReservationID);
-            PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Reservation (ReservationID, GuestID, RoomID, StaffID) VALUES (?, ?, ?, ?)");
-            ps.setInt(1, ReservationID);
-            ps.setInt(2, GuestID);
-            ps.setInt(3, RoomID);
-            ps.setInt(4, StaffID);
+            System.out.println("Reservation/new GuestID");
+            PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Reservation (GuestID, RoomID, StaffID) VALUES (?, ?, ?)");
+            ps.setInt(1, GuestID);
+            ps.setInt(2, RoomID);
+            ps.setInt(3, StaffID);
             ps.execute();
             return "{\"status\": \"OK\"}";
 
@@ -44,14 +42,13 @@ public class Reservation {
         System.out.println("Reservation/list");
         JSONArray list = new JSONArray();
         try {
-            PreparedStatement ps = Main.db.prepareStatement("SELECT ReservationID, GuestID, RoomID, StaffID FROM Reservation");
+            PreparedStatement ps = Main.db.prepareStatement("SELECT GuestID, RoomID, StaffID FROM Reservation");
 
             ResultSet results = ps.executeQuery();
             while (results.next()) {
                 JSONObject item = new JSONObject();
-                item.put("ReservationID", results.getInt(1));
                 item.put("GuestID", results.getInt(2));
-                item.put("RoomID", results.getInt(3));
+                item.put("RoomID", results.getInt(2));
                 item.put("StaffID", results.getInt(3));
                 list.add(item);
             }
@@ -71,16 +68,15 @@ public class Reservation {
         System.out.println("Reservation/get/" + id);
 
         try {
-            PreparedStatement ps = Main.db.prepareStatement("SELECT ReservationID, GuestID, RoomID, StaffID FROM Reservation WHERE ReservationID = ?");
+            PreparedStatement ps = Main.db.prepareStatement("SELECT GuestID, RoomID, StaffID FROM Reservation WHERE GuestID = ?");
             ps.setInt(1, id);
 
             ResultSet results = ps.executeQuery();
             if (results.next()) {
                 JSONObject item = new JSONObject();
-                item.put("ReservationID", results.getInt(1));
-                item.put("GuestID", results.getString(2));
-                item.put("RoomID", results.getString(3));
-                item.put("StaffID", results.getString(4));
+                item.put("GuestID", results.getString(1));
+                item.put("RoomID", results.getString(2));
+                item.put("StaffID", results.getString(3));
                 return item.toString();
             } else {
                 return "{\"error\": \"Unable to get reservation with id " + id + ", please see server console for more info.\"}";
@@ -99,18 +95,17 @@ public class Reservation {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public String updateReservation(
-            @FormDataParam("ReservationID") Integer ReservationID, @FormDataParam("GuestID") Integer GuestID, @FormDataParam("RoomID") Integer RoomID, @FormDataParam("StaffID") Integer StaffID) {
+            @FormDataParam("GuestID") Integer GuestID, @FormDataParam("RoomID") Integer RoomID, @FormDataParam("StaffID") Integer StaffID) {
         try {
-            if (ReservationID == null || GuestID == null || RoomID == null || StaffID == null) {
+            if (GuestID == null || RoomID == null || StaffID == null) {
                 throw new Exception("One or more form data parameters are missing in the HTTP request.");
             }
-            System.out.println("Reservation/update ReservationID=" + ReservationID);
+            System.out.println("Reservation/update GuestID=");
 
-            PreparedStatement ps = Main.db.prepareStatement("UPDATE Reservation SET GuestID = ?, RoomID = ?, StaffID = ? WHERE ReservationID = ?");
+            PreparedStatement ps = Main.db.prepareStatement("UPDATE Reservation SET GuestID = ?, RoomID = ?, StaffID = ?");
             ps.setInt(1, StaffID);
             ps.setInt(2, GuestID);
             ps.setInt(3, RoomID);
-            ps.setInt(4, ReservationID);
             ps.execute();
             return "{\"status\": \"OK\"}";
 
@@ -125,15 +120,15 @@ public class Reservation {
     @Path("delete")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public String deleteReservation(@FormDataParam("ReservationID") Integer ReservationID) {
+    public String deleteReservation(@FormDataParam("GuestID") Integer GuestID) {
         try {
-            if (ReservationID == null) {
+            if (GuestID == null) {
                 throw new Exception("One or more form data parameters are missing in the HTTP request.");
             }
-            System.out.println("Reservation/delete ReservationID=" + ReservationID);
+            System.out.println("Reservation/delete GuestID=" + GuestID);
 
-            PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Reservation WHERE ReservationID = ?");
-            ps.setInt(1, ReservationID);
+            PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Reservation WHERE GuestID = ?");
+            ps.setInt(1, GuestID);
             ps.execute();
             return "{\"status\": \"OK\"}";
 

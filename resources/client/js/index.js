@@ -1,8 +1,4 @@
 function pageLoad() {
-    document.getElementById("GuestButton").addEventListener("click", guestRedirect);
-    document.getElementById("StaffButton").addEventListener("click", staffRedirect);
-    document.getElementById("ReservationButton").addEventListener("click", reservationRedirect);
-    document.getElementById("FeaturesButton").addEventListener("click", featuresRedirect);
 
     let RoomHTML = `<table>` +
         '<tr>' +
@@ -48,7 +44,8 @@ function pageLoad() {
         }
 
     });
-    document.getElementById("IndexButton").addEventListener("click", indexRedirect);
+
+    //document.getElementById("IndexButton").addEventListener("click", indexRedirect);  <-- nope
 
     document.getElementById("saveButton").addEventListener("click", saveEditRoom);
     document.getElementById("cancelButton").addEventListener("click", clearEditRoom);
@@ -191,16 +188,4 @@ function deleteRoom(event) {
             }
         );
     }
-}
-function guestRedirect(){
-    window.location.href="/client/guest.html"
-}
-function staffRedirect(){
-    window.location.href="/client/staff.html"
-}
-function reservationRedirect(){
-    window.location.href="/client/reservation.html"
-}
-function featuresRedirect(){
-    window.location.href="/client/features.html"
 }

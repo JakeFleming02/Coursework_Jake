@@ -37,12 +37,6 @@ function pageLoad() {
 
     });
 
-
-    document.getElementById("IndexButton").addEventListener("click", indexRedirect);
-    document.getElementById("GuestButton").addEventListener("click", guestRedirect);
-    document.getElementById("ReservationButton").addEventListener("click", reservationRedirect);
-    document.getElementById("FeaturesButton").addEventListener("click", featuresRedirect);
-
     document.getElementById("saveButton").addEventListener("click", saveEditStaff);
     document.getElementById("cancelButton").addEventListener("click", clearEditStaff);
 
@@ -151,17 +145,4 @@ function deleteStaff(event) {
             }
         );
     }
-}
-
-function indexRedirect(){
-    window.location.href="/client/index.html"
-}
-function guestRedirect(){
-    window.location.href="/client/guest.html"
-}
-function reservationRedirect(){
-    window.location.href="/client/reservation.html"
-}
-function featuresRedirect(){
-    window.location.href="/client/features.html"
 }
