@@ -47,7 +47,7 @@ public class Reservation {
             ResultSet results = ps.executeQuery();
             while (results.next()) {
                 JSONObject item = new JSONObject();
-                item.put("GuestID", results.getInt(2));
+                item.put("GuestID", results.getInt(1));
                 item.put("RoomID", results.getInt(2));
                 item.put("StaffID", results.getInt(3));
                 list.add(item);

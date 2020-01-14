@@ -43,7 +43,7 @@ public class Room {
     @Path("list")
     @Produces(MediaType.APPLICATION_JSON)
     public String listRoom() {
-        System.out.println("room/list");
+        System.out.println("Room/list");
         JSONArray list = new JSONArray();
         try {
             PreparedStatement ps = Main.db.prepareStatement("SELECT RoomID, RoomName, RoomLocation, Cleaned, Checked, OutOfOrder FROM Room");
