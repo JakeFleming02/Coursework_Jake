@@ -62,7 +62,7 @@ function editGuest(event) {
         document.getElementById("GuestName").value = '';
         document.getElementById("GuestArrive").value = '';
         document.getElementById("GuestLeave").value = '';
-        document.getElementById("VIP").value = '';
+        document.getElementById("VIP").checked = false;
 
     } else {
 
@@ -109,10 +109,6 @@ function saveEditGuest(event) {
         return;
     }
 
-    if (document.getElementById("VIP").value.trim() === '') {
-        alert("Please provide whether a guest is a VIP or not.");
-        return;
-    }
     const id = document.getElementById("GuestID").value;
     const form = document.getElementById("GuestForm");
     const formData = new FormData(form);
@@ -143,7 +139,7 @@ function clearEditGuest(event) {
     document.getElementById("GuestName").value = '';
     document.getElementById("GuestArrive").value = '';
     document.getElementById("GuestLeave").value = '';
-    document.getElementById("VIP").value = '';
+    document.getElementById("VIP").checked = false;
 
     document.getElementById("editHeading").innerHTML = 'Add new guest:';
 

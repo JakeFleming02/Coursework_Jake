@@ -17,9 +17,12 @@ public class Guest {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public String insertGuest(
-            @FormDataParam("GuestName") String GuestName, @FormDataParam("GuestArrive") String GuestArrive, @FormDataParam("GuestLeave") String GuestLeave, @FormDataParam("VIP") Boolean VIP) {
+            @FormDataParam("GuestName") String GuestName,
+            @FormDataParam("GuestArrive") String GuestArrive,
+            @FormDataParam("GuestLeave") String GuestLeave,
+            @DefaultValue("false") @FormDataParam("VIP") String VIP) {
         try {
-            if (GuestName == null || GuestArrive == null || GuestLeave == null || VIP == null) {
+            if (GuestName == null || GuestArrive == null || GuestLeave == null) {
                 throw new Exception("One or more form data parameters are missing in the HTTP request.");
             }
             System.out.println("Guest/new GuestID=");
@@ -27,7 +30,7 @@ public class Guest {
             ps.setString(1, GuestName);
             ps.setString(2, GuestArrive);
             ps.setString(3, GuestLeave);
-            ps.setBoolean(4, VIP);
+            ps.setBoolean(4, VIP.toLowerCase().equals("true") || VIP.toLowerCase().equals("on"));
             ps.execute();
             return "{\"status\": \"OK\"}";
 
@@ -101,7 +104,11 @@ public class Guest {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public String updateGuest(
-            @FormDataParam("GuestID") Integer GuestID, @FormDataParam("GuestName") String GuestName, @FormDataParam("GuestArrive") String GuestArrive, @FormDataParam("GuestLeave") String GuestLeave, @FormDataParam("VIP") Boolean VIP) {
+            @FormDataParam("GuestID") Integer GuestID,
+            @FormDataParam("GuestName") String GuestName,
+            @FormDataParam("GuestArrive") String GuestArrive,
+            @FormDataParam("GuestLeave") String GuestLeave,
+            @DefaultValue("false") @FormDataParam("VIP") String VIP) {
         try {
             if (GuestID == null || GuestName == null || GuestArrive == null || GuestLeave == null || VIP == null) {
                 throw new Exception("One or more form data parameters are missing in the HTTP request.");
@@ -112,7 +119,7 @@ public class Guest {
             ps.setString(1, GuestName);
             ps.setString(2, GuestArrive);
             ps.setString(3, GuestLeave);
-            ps.setBoolean(4, VIP);
+            ps.setBoolean(4, VIP.toLowerCase().equals("true") || VIP.toLowerCase().equals("on"));
             ps.setInt(5, GuestID);
             ps.execute();
             return "{\"status\": \"OK\"}";
