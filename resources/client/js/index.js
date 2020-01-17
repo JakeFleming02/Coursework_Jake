@@ -65,9 +65,9 @@ function editRoom(event) {
         document.getElementById("RoomID").value = '';
         document.getElementById("RoomName").value = '';
         document.getElementById("RoomLocation").value = '';
-        document.getElementById("Cleaned").value = '';
-        document.getElementById("Checked").value = '';
-        document.getElementById("OutOfOrder").value = '';
+        document.getElementById("Cleaned").checked = false;
+        document.getElementById("Checked").checked = false;
+        document.getElementById("OutOfOrder").checked = false;
 
     } else {
 
@@ -84,9 +84,9 @@ function editRoom(event) {
                 document.getElementById("RoomID").value = room.RoomID;
                 document.getElementById("RoomName").value = room.RoomName;
                 document.getElementById("RoomLocation").value = room.RoomLocation;
-                document.getElementById("Cleaned").value = room.Cleaned;
-                document.getElementById("Checked").value = room.Checked;
-                document.getElementById("OutOfOrder").value = room.OutOfOrder;
+                document.getElementById("Cleaned").checked = room.Cleaned;
+                document.getElementById("Checked").checked = room.Checked;
+                document.getElementById("OutOfOrder").checked = room.OutOfOrder;
 
             }
 
@@ -110,26 +110,15 @@ function saveEditRoom(event) {
         return;
     }
 
-    if (document.getElementById("Cleaned").value.trim() === '') {
-        alert("Please provide whether the room has been cleaned or not.");
-        return;
-    }
-
-    if (document.getElementById("Checked").value.trim() === '') {
-        alert("Please provide whether the room has been cleaned or not.");
-        return;
-    }
-
-    if (document.getElementById("OutOfOrder").value.trim() === '') {
-        alert("Please provide whether the room has been cleaned or not.");
-        return;
-    }
 
     const id = document.getElementById("RoomID").value;
     const form = document.getElementById("RoomForm");
     const formData = new FormData(form);
 
     let apiPath;
+
+    console.log(id);
+
     if (id === '') {
         apiPath = '/Room/new';
     } else {
@@ -154,9 +143,9 @@ function clearEditRoom(event) {
     document.getElementById("RoomID").value = '';
     document.getElementById("RoomName").value = '';
     document.getElementById("RoomLocation").value = '';
-    document.getElementById("Cleaned").value = '';
-    document.getElementById("Checked").value = '';
-    document.getElementById("OutOfOrder").value = '';
+    document.getElementById("Cleaned").checked = false;
+    document.getElementById("Checked").checked = false;
+    document.getElementById("OutOfOrder").checked = false;
 
     document.getElementById("editHeading").innerHTML = 'Add new room:';
 
