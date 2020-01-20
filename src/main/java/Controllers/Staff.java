@@ -17,15 +17,14 @@ public class Staff {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public String insertStaff(
-            @FormDataParam("StaffID") Integer StaffID, @FormDataParam("StaffName") String StaffName) {
+            @FormDataParam("StaffName") String StaffName) {
         try {
-            if (StaffID == null || StaffName == null) {
+            if (StaffName == null) {
                 throw new Exception("One or more form data parameters are missing in the HTTP request.");
             }
-            System.out.println("Staff/new StaffID=" + StaffID);
-            PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Staff (StaffID, StaffName) VALUES (?, ?)");
-            ps.setInt(1, StaffID);
-            ps.setString(2, StaffName);
+            System.out.println("Staff/new StaffID=");
+            PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Staff (StaffName) VALUES (?)");
+            ps.setString(1, StaffName);
             ps.execute();
             return "{\"status\": \"OK\"}";
 

@@ -103,9 +103,9 @@ public class Reservation {
             System.out.println("Reservation/update GuestID=");
 
             PreparedStatement ps = Main.db.prepareStatement("UPDATE Reservation SET GuestID = ?, RoomID = ?, StaffID = ?");
-            ps.setInt(1, StaffID);
-            ps.setInt(2, GuestID);
-            ps.setInt(3, RoomID);
+            ps.setInt(1, GuestID);
+            ps.setInt(2, RoomID);
+            ps.setInt(3, StaffID);
             ps.execute();
             return "{\"status\": \"OK\"}";
 
@@ -137,4 +137,5 @@ public class Reservation {
             return "{\"error\": \"Unable to delete item, please see server console for more info.\"}";
         }
     }
+
 }

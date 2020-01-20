@@ -17,13 +17,13 @@ function pageLoad() {
         for (let guest of Guest) {
 
             GuestHTML += `<tr>` +
-                `<th>${guest.GuestID}</th>` +
-                `<th>${guest.GuestName}</th>` +
-                `<th>${guest.GuestArrive}</th>` +
-                `<th>${guest.GuestLeave}</th>` +
-                `<th>${guest.VIP}</th>` +
-                `<th><button class="editButton" data-id=${guest.GuestID}>Edit</button></th>` +
-                `<th><button class='deleteButton' data-id='${guest.GuestID}'>Delete</button></th>` +
+                `<td style="background-color: ${"#A6C1FF"}">${guest.GuestID}</td>` +
+                `<td style="background-color: ${"#A6C1FF"}">${guest.GuestName}</td>` +
+                `<td style="background-color: ${"#A6C1FF"}">${guest.GuestArrive}</td>` +
+                `<td style="background-color: ${"#A6C1FF"}">${guest.GuestLeave}</td>` +
+                `<td style="background-color: ${guest.VIP ? "gold" : "#A6C1FF"}">${guest.VIP}</td>` +
+                `<td style="background-color: ${"#A6C1FF"}"><button class="editButton" data-id=${guest.GuestID}>Edit</button></td>` +
+                `<td style="background-color: ${"#A6C1FF"}"><button class='deleteButton' data-id='${guest.GuestID}'>Delete</button></td>` +
                 `</tr>`;
         }
 
@@ -80,7 +80,7 @@ function editGuest(event) {
                 document.getElementById("GuestName").value = guest.GuestName;
                 document.getElementById("GuestArrive").value = guest.GuestArrive;
                 document.getElementById("GuestLeave").value = guest.GuestLeave;
-                document.getElementById("VIP").value = guest.VIP;
+                document.getElementById("VIP").checked = guest.VIP;
 
             }
 

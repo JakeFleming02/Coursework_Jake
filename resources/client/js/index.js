@@ -18,14 +18,14 @@ function pageLoad() {
         for (let room of Room) {
 
             RoomHTML += `<tr>` +
-                `<th>${room.RoomID}</th>` +
-                `<th>${room.RoomName}</th>` +
-                `<th>${room.RoomLocation}</th>` +
-                `<th>${room.Cleaned}</th>` +
-                `<th>${room.Checked}</th>` +
-                `<th>${room.OutOfOrder}</th>` +
-                `<th><button class="editButton" data-id=${room.RoomID}>Edit</button></th>` +
-                `<th><button class='deleteButton' data-id='${room.RoomID}'>Delete</button></th>` +
+                `<td style="background-color: ${"#A6C1FF"}">${room.RoomID}</td>` +
+                `<td style="background-color: ${"#A6C1FF"}">${room.RoomName}</td>` +
+                `<td style="background-color: ${"#A6C1FF"}">${room.RoomLocation}</td>` +
+                `<td style="background-color: ${room.Cleaned ? "#C1FFA6" : "#FFB7A6"}">${room.Cleaned}</td>` +
+                `<td style="background-color: ${room.Checked ? "#C1FFA6" : "#FFB7A6"}">${room.Checked}</td>` +
+                `<td style="background-color: ${room.OutOfOrder ? "#C1FFA6" : "#FFB7A6"}">${room.OutOfOrder}</td>` +
+                `<td style="background-color: ${"#A6C1FF"}"><button class="editButton" data-id=${room.RoomID}>Edit</button></td>` +
+                `<td style="background-color: ${"#A6C1FF"}"><button class='deleteButton' data-id='${room.RoomID}'>Delete</button></td>` +
                 `</tr>`;
         }
 

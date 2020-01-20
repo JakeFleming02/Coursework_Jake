@@ -14,10 +14,10 @@ function pageLoad() {
         for (let staff of Staff) {
 
             StaffHTML += `<tr>` +
-                `<th>${staff.StaffID}</th>` +
-                `<th>${staff.StaffName}</th>` +
-                `<th><button class="editButton" data-id=${staff.StaffID}>Edit</button></th>` +
-                `<th><button class='deleteButton' data-id='${staff.StaffID}'>Delete</button></th>` +
+                `<td style="background-color: ${"#A6C1FF"}">${staff.StaffID}</td>` +
+                `<td style="background-color: ${"#A6C1FF"}">${staff.StaffName}</td>` +
+                `<td style="background-color: ${"#A6C1FF"}"><button class="editButton" data-id=${staff.StaffID}>Edit</button></td>` +
+                `<td style="background-color: ${"#A6C1FF"}"><button class='deleteButton' data-id='${staff.StaffID}'>Delete</button></td>` +
                 `</tr>`;
         }
 

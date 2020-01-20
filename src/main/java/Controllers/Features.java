@@ -17,15 +17,14 @@ public class Features {
     @Consumes(MediaType.MULTIPART_FORM_DATA) //Parameters that need to be populated (form data parameters) which specify the matching form field names
     @Produces(MediaType.APPLICATION_JSON)
     public String insertFeature( //The method is made public so that the Jersey library can interact with it and returns a string (JSON)
-            @FormDataParam("FeatureID") Integer FeatureID, @FormDataParam("FeatureName") String FeatureName) {
+            @FormDataParam("FeatureName") String FeatureName) {
         try {
-            if (FeatureID == null || FeatureName == null) {
+            if (FeatureName == null) {
                 throw new Exception("One or more form data parameters are missing in the HTTP request.");
             }
-            System.out.println("Feature/new FeatureID=" + FeatureID);
-            PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Features (FeatureID, FeatureName) VALUES (?, ?)");
-            ps.setInt(1, FeatureID);
-            ps.setString(2, FeatureName);
+            System.out.println("Feature/new");
+            PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Features (FeatureName) VALUES (?)");
+            ps.setString(1, FeatureName);
             ps.execute();
             return "{\"status\": \"OK\"}";
 

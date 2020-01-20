@@ -14,10 +14,10 @@ function pageLoad() {
         for (let features of Features) {
 
             FeaturesHTML += `<tr>` +
-                `<th>${features.FeatureID}</th>` +
-                `<th>${features.FeatureName}</th>` +
-                `<th><button class="editButton" data-id=${features.FeatureID}>Edit</button></th>` +
-                `<th><button class='deleteButton' data-id='${features.FeatureID}'>Delete</button></th>` +
+                `<td style="background-color: ${"#A6C1FF"}">${features.FeatureID}</td>` +
+                `<td style="background-color: ${"#A6C1FF"}">${features.FeatureName}</td>` +
+                `<td style="background-color: ${"#A6C1FF"}"><button class="editButton" data-id=${features.FeatureID}>Edit</button></td>` +
+                `<td style="background-color: ${"#A6C1FF"}"><button class='deleteButton' data-id='${features.FeatureID}'>Delete</button></td>` +
                 `</tr>`;
         }
 
@@ -92,9 +92,9 @@ function saveEditFeatures(event) {
 
     let apiPath;
     if (id === '') {
-        apiPath = '/Feature/new';
+        apiPath = '/Features/new';
     } else {
-        apiPath = '/Feature/update';
+        apiPath = '/Features/update';
     }
 
     fetch(apiPath, {method: 'post', body: formData}

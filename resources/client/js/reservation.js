@@ -15,11 +15,11 @@ function pageLoad() {
         for (let reservation of Reservation) {
 
             ReservationHTML += `<tr>` +
-                `<th>${reservation.GuestID}</th>` +
-                `<th>${reservation.RoomID}</th>` +
-                `<th>${reservation.StaffID}</th>` +
-                `<th><button class="editButton" data-id=${reservation.GuestID}>Edit</button></th>` +
-                `<th><button class='deleteButton' data-id='${reservation.GuestID}'>Delete</button></th>` +
+                `<td style="background-color: ${"#A6C1FF"}">${reservation.GuestID}</td>` +
+                `<td style="background-color: ${"#A6C1FF"}">${reservation.RoomID}</td>` +
+                `<td style="background-color: ${"#A6C1FF"}">${reservation.StaffID}</td>` +
+                `<td style="background-color: ${"#A6C1FF"}"><button class="editButton" data-id=${reservation.GuestID}>Edit</button></td>` +
+                `<td style="background-color: ${"#A6C1FF"}"><button class='deleteButton' data-id='${reservation.GuestID}'>Delete</button></td>` +
                 `</tr>`;
         }
 
